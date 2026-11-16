@@ -1,0 +1,2999 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Flowtify</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%8B%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Space+Grotesk:wght@500;600;700&display=swap">
+<style>
+:root {
+  --radius: 10px;
+  --background: oklch(0.972 0.006 220);
+  --foreground: oklch(0.22 0.03 235);
+  --surface: oklch(0.95 0.01 220);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.22 0.03 235);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.22 0.03 235);
+  --primary: oklch(0.52 0.104 200);
+  --primary-foreground: oklch(0.985 0.01 200);
+  --secondary: oklch(0.93 0.015 220);
+  --secondary-foreground: oklch(0.3 0.03 235);
+  --muted: oklch(0.94 0.008 220);
+  --muted-foreground: oklch(0.52 0.02 235);
+  --accent: oklch(0.79 0.145 72);
+  --destructive: oklch(0.585 0.21 22);
+  --destructive-foreground: oklch(0.985 0.005 250);
+  --success: oklch(0.55 0.14 155);
+  --warning: oklch(0.79 0.145 72);
+  --warn-text: oklch(0.45 0.11 65);
+  --border: oklch(0.88 0.012 220);
+  --input: oklch(0.86 0.012 220);
+  --ring: oklch(0.52 0.104 200);
+  --overlay: oklch(0.15 0.02 240 / 0.55);
+  --shadow-tile: 0 1px 2px oklch(0.2 0.03 220 / 0.12), 0 1px 1px oklch(0.2 0.03 220 / 0.06);
+  --shadow-lift: 0 12px 28px oklch(0.2 0.03 220 / 0.22);
+  --bg-aurora: linear-gradient(135deg, oklch(0.5 0.1 200), oklch(0.42 0.13 250));
+  --bg-citrus: linear-gradient(135deg, oklch(0.72 0.14 60), oklch(0.6 0.16 30));
+  --bg-forest: linear-gradient(135deg, oklch(0.52 0.12 155), oklch(0.4 0.09 190));
+  --bg-dusk: linear-gradient(135deg, oklch(0.45 0.13 300), oklch(0.35 0.1 260));
+  --bg-slate: linear-gradient(135deg, oklch(0.42 0.03 240), oklch(0.3 0.03 245));
+  --bg-rose: linear-gradient(135deg, oklch(0.62 0.16 10), oklch(0.5 0.13 340));
+  --label-green: oklch(0.66 0.15 150);
+  --label-yellow: oklch(0.82 0.15 90);
+  --label-orange: oklch(0.72 0.16 55);
+  --label-red: oklch(0.62 0.2 22);
+  --label-purple: oklch(0.58 0.16 300);
+  --label-blue: oklch(0.6 0.14 240);
+  --label-sky: oklch(0.72 0.11 220);
+  --label-lime: oklch(0.78 0.16 130);
+  --label-pink: oklch(0.68 0.16 350);
+  --label-gray: oklch(0.58 0.02 240);
+  color-scheme: light;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --background: oklch(0.19 0.024 245);
+    --foreground: oklch(0.95 0.008 220);
+    --surface: oklch(0.24 0.026 245);
+    --card: oklch(0.275 0.026 245);
+    --card-foreground: oklch(0.95 0.008 220);
+    --popover: oklch(0.235 0.026 245);
+    --popover-foreground: oklch(0.95 0.008 220);
+    --primary: oklch(0.72 0.11 195);
+    --primary-foreground: oklch(0.18 0.03 220);
+    --secondary: oklch(0.3 0.028 245);
+    --secondary-foreground: oklch(0.94 0.008 220);
+    --muted: oklch(0.3 0.024 245);
+    --muted-foreground: oklch(0.72 0.02 230);
+    --destructive: oklch(0.68 0.19 22);
+    --success: oklch(0.72 0.13 158);
+    --warning: oklch(0.8 0.14 74);
+    --warn-text: oklch(0.85 0.13 80);
+    --border: oklch(1 0 0 / 12%);
+    --input: oklch(1 0 0 / 18%);
+    --ring: oklch(0.72 0.11 195);
+    --overlay: oklch(0.05 0.01 240 / 0.65);
+    --shadow-tile: 0 1px 2px oklch(0 0 0 / 0.35);
+    --shadow-lift: 0 12px 28px oklch(0 0 0 / 0.45);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --background: oklch(0.19 0.024 245);
+  --foreground: oklch(0.95 0.008 220);
+  --surface: oklch(0.24 0.026 245);
+  --card: oklch(0.275 0.026 245);
+  --card-foreground: oklch(0.95 0.008 220);
+  --popover: oklch(0.235 0.026 245);
+  --popover-foreground: oklch(0.95 0.008 220);
+  --primary: oklch(0.72 0.11 195);
+  --primary-foreground: oklch(0.18 0.03 220);
+  --secondary: oklch(0.3 0.028 245);
+  --secondary-foreground: oklch(0.94 0.008 220);
+  --muted: oklch(0.3 0.024 245);
+  --muted-foreground: oklch(0.72 0.02 230);
+  --destructive: oklch(0.68 0.19 22);
+  --success: oklch(0.72 0.13 158);
+  --warning: oklch(0.8 0.14 74);
+  --warn-text: oklch(0.85 0.13 80);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 18%);
+  --ring: oklch(0.72 0.11 195);
+  --overlay: oklch(0.05 0.01 240 / 0.65);
+  --shadow-tile: 0 1px 2px oklch(0 0 0 / 0.35);
+  --shadow-lift: 0 12px 28px oklch(0 0 0 / 0.45);
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { height: 100%; scroll-padding-top: env(safe-area-inset-top, 0px); background: var(--card); }
+body {
+  height: 100%; margin: 0;
+  font-family: "DM Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 14px; line-height: 1.45;
+  color: var(--foreground); background: var(--background);
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, h4, .display { font-family: "Space Grotesk", ui-sans-serif, system-ui, sans-serif; letter-spacing: -0.02em; margin: 0; }
+p { margin: 0; }
+button, input, textarea, select { font: inherit; color: inherit; }
+#root { height: 100%; }
+.ic { flex-shrink: 0; display: block; }
+.muted { color: var(--muted-foreground); }
+.small { font-size: 12px; }
+.row { display: flex; align-items: center; gap: 8px; }
+.grow { flex: 1; min-width: 0; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* App shell */
+.app { height: 100%; display: flex; flex-direction: column; background: var(--background); }
+.hdr {
+  flex-shrink: 0; height: 56px; display: flex; align-items: center; gap: 8px;
+  padding: 0 16px; border-bottom: 1px solid var(--border); background: var(--card);
+  position: relative; z-index: 40;
+}
+.brand {
+  font-family: "Space Grotesk", sans-serif; font-weight: 700; font-size: 19px; letter-spacing: -0.03em;
+  background: none; border: 0; cursor: pointer; padding: 0 6px 0 0; color: var(--foreground);
+}
+.brand span, .dot-accent { color: var(--primary); }
+.hdr-right { margin-left: auto; display: flex; align-items: center; gap: 4px; }
+.search-trigger { width: 260px; justify-content: flex-start; color: var(--muted-foreground); margin-left: 4px; }
+.search-trigger kbd { margin-left: auto; font: 11px "DM Sans", sans-serif; border: 1px solid var(--border); border-radius: 4px; padding: 0 4px; }
+.main { flex: 1; min-height: 0; overflow: auto; }
+.main-board { display: flex; flex-direction: column; overflow: hidden; }
+.banner {
+  flex-shrink: 0; font-size: 12px; padding: 6px 16px; text-align: center;
+  background: color-mix(in srgb, var(--warning) 22%, var(--card)); color: var(--foreground);
+  border-bottom: 1px solid var(--border);
+}
+.is-active { background: var(--muted); }
+
+/* Botões e campos */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  height: 32px; padding: 0 12px; border-radius: 8px; border: 1px solid transparent;
+  background: transparent; font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap;
+  transition: background-color .15s, color .15s, box-shadow .15s, opacity .15s; text-decoration: none;
+}
+.btn:disabled { opacity: .5; cursor: default; }
+.btn:focus-visible, .inp:focus-visible, .tile:focus-visible, .ctile:focus-visible, .menu-item:focus-visible,
+.who-btn:focus-visible, .mc-item:focus-visible, .res:focus-visible, .grip:focus-visible, .ws-btn:focus-visible {
+  outline: 2px solid var(--ring); outline-offset: 2px;
+}
+.btn-primary { background: var(--primary); color: var(--primary-foreground); }
+.btn-primary:hover:not(:disabled) { background: color-mix(in srgb, var(--primary) 86%, var(--foreground)); }
+.btn-secondary { background: var(--secondary); color: var(--secondary-foreground); }
+.btn-secondary:hover:not(:disabled) { background: color-mix(in srgb, var(--secondary) 84%, var(--foreground)); }
+.btn-outline { border-color: var(--border); background: var(--background); }
+.btn-outline:hover:not(:disabled) { background: var(--muted); }
+.btn-ghost:hover:not(:disabled) { background: var(--muted); }
+.btn-destructive { background: var(--destructive); color: var(--destructive-foreground); }
+.btn-destructive:hover:not(:disabled) { background: color-mix(in srgb, var(--destructive) 86%, black); }
+.btn-danger { color: var(--destructive); }
+.btn-icon { width: 32px; padding: 0; }
+.btn-sm { height: 30px; padding: 0 10px; font-size: 12.5px; }
+.btn-xs { height: 24px; padding: 0 6px; font-size: 12px; border-radius: 6px; }
+.btn-icon.btn-xs { width: 24px; padding: 0; }
+.btn-block { width: 100%; justify-content: flex-start; }
+.badge { background: var(--primary); color: var(--primary-foreground); border-radius: 999px; padding: 0 6px; font-size: 11px; line-height: 18px; }
+
+.inp {
+  width: 100%; height: 36px; padding: 0 10px; border: 1px solid var(--input); border-radius: 8px;
+  background: var(--background); font-size: 14px; outline: none;
+}
+.inp:focus { border-color: var(--ring); box-shadow: 0 0 0 3px color-mix(in srgb, var(--ring) 22%, transparent); }
+textarea.inp { height: auto; padding: 8px 10px; resize: vertical; line-height: 1.45; }
+select.inp { padding: 0 8px; cursor: pointer; }
+.inp-sm { height: 30px; font-size: 12.5px; }
+textarea.inp-sm { padding: 6px 8px; }
+.inp::placeholder { color: var(--muted-foreground); }
+input[type="checkbox"] { accent-color: var(--primary); width: 16px; height: 16px; margin: 0; cursor: pointer; flex-shrink: 0; }
+input[type="checkbox"].switch {
+  appearance: none; -webkit-appearance: none; width: 32px; height: 18px; border-radius: 999px;
+  background: var(--input); position: relative; transition: background .15s;
+}
+.switch::after {
+  content: ""; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: 50%;
+  background: var(--card); box-shadow: 0 1px 2px oklch(0 0 0 / .25); transition: transform .15s;
+}
+input[type="checkbox"].switch:checked { background: var(--primary); }
+.switch:checked::after { transform: translateX(14px); }
+.field { display: flex; flex-direction: column; gap: 4px; font-size: 12.5px; font-weight: 500; }
+
+/* Diálogos, popovers e menus */
+.overlay {
+  position: fixed; inset: 0; z-index: 100; background: var(--overlay);
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: max(6vh, calc(env(safe-area-inset-top, 0px) + 12px)) 12px calc(24px + env(safe-area-inset-bottom, 0px));
+  overflow-y: auto;
+}
+.dialog {
+  position: relative; width: 100%; background: var(--popover); color: var(--popover-foreground);
+  border: 1px solid var(--border); border-radius: 14px; box-shadow: var(--shadow-lift); padding: 20px;
+  animation: dlg-in .16s ease-out;
+}
+@keyframes dlg-in { from { opacity: 0; transform: translateY(6px) scale(.99); } to { opacity: 1; transform: none; } }
+.dialog-x { position: absolute; top: 10px; right: 10px; }
+.dialog h2 { font-size: 18px; font-weight: 600; margin-bottom: 4px; padding-right: 36px; }
+.dialog .sub { color: var(--muted-foreground); font-size: 13px; }
+.dlg-body { display: flex; flex-direction: column; gap: 14px; margin-top: 16px; }
+.dlg-foot { display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px; }
+.pop-wrap { position: relative; display: inline-flex; }
+.pop {
+  position: absolute; top: calc(100% + 6px); z-index: 60; background: var(--popover); color: var(--popover-foreground);
+  border: 1px solid var(--border); border-radius: 10px; box-shadow: var(--shadow-lift); padding: 6px;
+  max-height: min(70vh, 540px); overflow: auto; animation: dlg-in .12s ease-out;
+}
+.pop-start { left: 0; }
+.pop-end { right: 0; }
+.menu-item {
+  display: flex; align-items: center; gap: 8px; width: 100%; padding: 7px 8px; border: 0; background: none;
+  border-radius: 6px; text-align: left; font-size: 13px; cursor: pointer;
+}
+.menu-item:hover { background: var(--muted); }
+.menu-item.on { background: color-mix(in srgb, var(--primary) 14%, transparent); }
+.menu-item .trail { margin-left: auto; color: var(--primary); }
+.menu-label { font-size: 12px; font-weight: 600; color: var(--muted-foreground); padding: 8px 8px 4px; }
+.menu-sub { font-size: 12px; color: var(--muted-foreground); padding: 0 8px 6px; overflow: hidden; text-overflow: ellipsis; }
+.sep { height: 1px; background: var(--border); margin: 6px 0; }
+.swatch { width: 18px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+.trunc { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+
+/* Avatares */
+.av {
+  display: inline-flex; align-items: center; justify-content: center; border-radius: 50%;
+  color: #fff; font-weight: 600; flex-shrink: 0; line-height: 1; user-select: none; letter-spacing: 0;
+}
+.av-stack { display: flex; margin-left: auto; }
+.av-stack .av { box-shadow: 0 0 0 2px var(--card); }
+.av-stack .av + .av { margin-left: -4px; }
+.av-btn { width: 36px; height: 36px; border-radius: 50%; }
+
+/* Tela inicial: perfis */
+.center-page { max-width: 460px; margin: 0 auto; padding: 56px 16px 40px; }
+.hero-brand { font-size: 40px; font-weight: 700; letter-spacing: -0.04em; }
+.hero-flow { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin: 14px 0 18px; font-size: 12px; font-weight: 600; }
+.hero-flow span { padding: 3px 9px; border-radius: 999px; background: var(--muted); color: var(--muted-foreground); }
+.hero-flow span:last-child { background: color-mix(in srgb, var(--success) 18%, transparent); color: var(--success); }
+.hero-flow .ic { color: var(--muted-foreground); }
+.who-list { display: flex; flex-direction: column; gap: 8px; margin: 22px 0 28px; }
+.who-btn {
+  display: flex; align-items: center; gap: 12px; padding: 10px 12px; border: 1px solid var(--border);
+  border-radius: 12px; background: var(--card); cursor: pointer; text-align: left; transition: border-color .15s, box-shadow .15s;
+}
+.who-btn:hover { border-color: var(--primary); box-shadow: var(--shadow-tile); }
+.who-btn strong { display: block; font-weight: 600; }
+.who-btn small { display: block; color: var(--muted-foreground); font-size: 12px; }
+.who-form { display: flex; flex-direction: column; gap: 12px; padding: 16px; border: 1px solid var(--border); border-radius: 14px; background: var(--card); }
+.who-form h2 { font-size: 15px; font-weight: 600; }
+.loading { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
+
+/* Meus quadros */
+.home { max-width: 1120px; margin: 0 auto; padding: 32px 16px 48px; display: flex; gap: 32px; }
+.ws-side { width: 228px; flex-shrink: 0; }
+.ws-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.ws-head h2 { font-family: "DM Sans", sans-serif; letter-spacing: 0; font-size: 13px; font-weight: 600; color: var(--muted-foreground); }
+.ws-list { display: flex; flex-direction: column; gap: 2px; }
+.ws-item { display: flex; align-items: center; gap: 2px; border-radius: 8px; }
+.ws-btn {
+  flex: 1; min-width: 0; text-align: left; padding: 8px 10px; border: 0; border-radius: 8px; background: none;
+  cursor: pointer; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.ws-item:hover .ws-btn { background: var(--muted); }
+.ws-item.cur .ws-btn { background: color-mix(in srgb, var(--primary) 13%, transparent); color: var(--primary); }
+.ws-tools { display: flex; opacity: 0; transition: opacity .15s; }
+.ws-item:hover .ws-tools, .ws-item:focus-within .ws-tools { opacity: 1; }
+.boards-main { flex: 1; min-width: 0; }
+.boards-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.boards-top h1 { font-size: 26px; font-weight: 700; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; margin-top: 12px; }
+.tile {
+  position: relative; height: 116px; border-radius: 12px; padding: 14px; color: #fff; cursor: pointer;
+  box-shadow: var(--shadow-tile); display: flex; flex-direction: column; justify-content: space-between;
+  transition: box-shadow .15s; outline-offset: 2px;
+}
+.tile:hover { box-shadow: var(--shadow-lift); }
+.tile h3 { font-size: 16px; font-weight: 600; text-shadow: 0 1px 2px oklch(0 0 0 / .25); padding-right: 28px; word-break: break-word; }
+.tile p { font-size: 12px; opacity: .85; }
+.tile-del { position: absolute; top: 8px; right: 8px; opacity: 0; color: #fff; background: oklch(0 0 0 / .22); }
+.tile-del:hover:not(:disabled) { background: oklch(0 0 0 / .4); }
+.tile:hover .tile-del, .tile:focus-within .tile-del { opacity: 1; }
+.tile.over { outline: 2px dashed var(--primary); }
+.tile.dragging { opacity: .5; }
+.tile-new {
+  height: 116px; border-radius: 12px; border: 1px dashed var(--border); background: var(--muted);
+  color: var(--muted-foreground); display: flex; align-items: center; justify-content: center; gap: 6px;
+  font-weight: 500; cursor: pointer; transition: color .15s, border-color .15s;
+}
+.tile-new:hover { color: var(--foreground); border-color: var(--primary); }
+.bg-pick { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+.bg-opt { height: 40px; border-radius: 8px; border: 2px solid transparent; cursor: pointer; }
+.bg-opt.on { border-color: var(--foreground); box-shadow: 0 0 0 2px var(--background) inset; }
+.preview { height: 84px; border-radius: 10px; padding: 12px; color: #fff; font-family: "Space Grotesk", sans-serif; font-weight: 600; font-size: 16px; }
+.empty-box { border: 1px dashed var(--border); border-radius: 14px; padding: 28px; max-width: 520px; margin: 40px auto; background: var(--card); }
+.empty-box h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+.people-list { display: flex; flex-direction: column; gap: 6px; }
+.person-row { display: flex; align-items: center; gap: 10px; padding: 6px 4px; }
+.person-row .info { flex: 1; min-width: 0; }
+.person-row small { display: block; color: var(--muted-foreground); font-size: 12px; overflow: hidden; text-overflow: ellipsis; }
+.tag { font-size: 11px; font-weight: 600; padding: 1px 7px; border-radius: 999px; background: var(--muted); color: var(--muted-foreground); }
+.note-box { font-size: 12px; color: var(--muted-foreground); background: var(--muted); border-radius: 8px; padding: 10px 12px; }
+
+/* Quadro */
+.board { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.board-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 14px 16px; }
+.board-title {
+  font-family: "Space Grotesk", sans-serif; font-size: 20px; font-weight: 700; letter-spacing: -0.02em; color: #fff;
+  text-shadow: 0 1px 3px oklch(0 0 0 / .3); background: none; border: 0; cursor: text;
+  display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px; border-radius: 8px;
+}
+.board-title .ic { opacity: 0; transition: opacity .15s; }
+.board-title:hover { background: oklch(1 0 0 / .14); }
+.board-title:hover .ic { opacity: .8; }
+.board-title-inp { width: 280px; max-width: 100%; height: 38px; font-family: "Space Grotesk", sans-serif; font-size: 18px; font-weight: 700; }
+.board-ws { color: oklch(1 0 0 / .8); font-size: 12px; }
+.board-tools { margin-left: auto; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.on-bg { background: color-mix(in srgb, var(--background) 92%, transparent); }
+.filter-inp { width: 180px; height: 32px; font-size: 13px; }
+.f-sec { padding: 6px 6px 10px; }
+.f-h { font-size: 12px; font-weight: 600; margin-bottom: 6px; }
+.f-due { display: flex; flex-wrap: wrap; gap: 4px; }
+.board-area { position: relative; flex: 1; min-height: 0; overflow: hidden; }
+.layout-seg { display: inline-flex; gap: 2px; padding: 2px; border-radius: 9px; }
+.layout-seg button {
+  width: 30px; height: 28px; border: 0; border-radius: 7px; background: none; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center; color: var(--muted-foreground);
+}
+.layout-seg button:hover { color: var(--foreground); }
+.layout-seg button.on { background: var(--card); color: var(--foreground); box-shadow: var(--shadow-tile); }
+.layout-seg button:focus-visible { outline: 2px solid var(--ring); outline-offset: 1px; }
+.canvas.lay-grid, .canvas.lay-column { overflow-x: hidden; overflow-y: auto; padding-bottom: 84px; }
+.canvas.lay-grid, .row-lists.lay-grid { flex-wrap: wrap; align-content: flex-start; }
+.canvas.lay-column, .row-lists.lay-column { flex-direction: column; align-items: stretch; }
+.lay-grid > .list, .lay-column > .list, .has-rows .list { max-height: none; max-width: 100%; }
+.lay-grid .list-cards, .lay-column .list-cards, .has-rows .list-cards { overflow-y: visible; }
+.lay-column > .list, .lay-column > .list-ph, .lay-column > .add-list { width: auto !important; }
+.lay-column .resize { display: none; }
+
+/* Linhas do quadro */
+.canvas.has-rows { flex-direction: column; align-items: stretch; overflow-x: hidden; overflow-y: auto; gap: 14px; padding-bottom: 84px; }
+.row-sec {
+  flex-shrink: 0; border-radius: 14px; padding: 6px 10px 10px;
+  background: oklch(0.15 0.03 240 / 0.22); border: 1px solid oklch(1 0 0 / 0.13);
+}
+.row-sec.collapsed { padding-bottom: 6px; }
+.row-head { display: flex; align-items: center; gap: 2px; color: #fff; margin-bottom: 8px; min-height: 32px; }
+.row-sec.collapsed .row-head { margin-bottom: 0; }
+.row-name {
+  width: min(420px, 55%); background: transparent; border: 0; color: #fff; outline: none;
+  font-family: "Space Grotesk", sans-serif; font-weight: 600; font-size: 15.5px; letter-spacing: -0.01em;
+  padding: 4px 6px; border-radius: 6px; text-overflow: ellipsis;
+}
+.row-name:hover { background: oklch(1 0 0 / 0.1); }
+.row-name:focus { background: oklch(1 0 0 / 0.16); box-shadow: 0 0 0 2px oklch(1 0 0 / 0.55); }
+.row-name::placeholder { color: oklch(1 0 0 / 0.6); }
+@supports (field-sizing: content) { .row-name { field-sizing: content; width: auto; min-width: 6ch; max-width: 55%; } }
+.row-meta { font-size: 12px; color: oklch(1 0 0 / 0.78); margin-right: auto; padding-left: 4px; white-space: nowrap; display: inline-flex; align-items: center; }
+.row-btn { color: #fff; opacity: .82; }
+.row-btn:hover:not(:disabled) { background: oklch(1 0 0 / 0.16); opacity: 1; }
+.row-btn:disabled { opacity: .35; }
+.row-btn:focus-visible { outline: 2px solid #fff; }
+.row-lists { display: flex; align-items: flex-start; gap: 12px; min-height: 56px; }
+.row-lists.lay-row { overflow-x: auto; padding-bottom: 6px; scrollbar-width: thin; scrollbar-color: oklch(1 0 0 / .45) transparent; }
+.add-row-btn {
+  align-self: flex-start; display: flex; align-items: center; gap: 6px; padding: 10px 14px; border-radius: 12px;
+  border: 1px dashed oklch(1 0 0 / 0.45); background: oklch(1 0 0 / 0.08); color: #fff; font-weight: 500; cursor: pointer;
+}
+.add-row-btn:hover { background: oklch(1 0 0 / 0.16); }
+
+/* Marcador de dias */
+.btn.is-on { background: var(--primary); color: var(--primary-foreground); }
+.day-line { display: flex; flex-wrap: wrap; align-items: center; gap: 3px 6px; padding: 0 4px 7px; min-height: 22px; }
+.day-pill {
+  display: inline-flex; align-items: center; gap: 4px; border: 0; cursor: pointer; border-radius: 999px;
+  padding: 2px 8px; font-size: 11.5px; font-weight: 600; white-space: nowrap;
+}
+.day-pill:focus-visible { outline: 2px solid var(--ring); outline-offset: 1px; }
+.day-ok { background: color-mix(in srgb, var(--success) 16%, transparent); color: var(--success); }
+.day-today { background: color-mix(in srgb, var(--warning) 26%, transparent); color: var(--warn-text); }
+.day-next { background: var(--muted); color: var(--muted-foreground); }
+.day-late { background: color-mix(in srgb, var(--destructive) 15%, transparent); color: var(--destructive); }
+.day-when { font-size: 11px; color: var(--muted-foreground); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.day-alert {
+  margin: 0 16px 12px; padding: 9px 12px; border-radius: 12px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px;
+  background: var(--card); color: var(--card-foreground); box-shadow: var(--shadow-tile);
+  border-left: 4px solid var(--destructive); font-size: 13px;
+}
+.day-alert.ok { border-left-color: var(--success); }
+.day-alert strong { font-weight: 600; margin-right: 2px; }
+.day-alert .ic-late { color: var(--destructive); }
+.day-alert .ic-ok { color: var(--success); }
+.late-chip {
+  border: 0; cursor: pointer; border-radius: 999px; padding: 2px 9px; font-size: 12px; font-weight: 600;
+  background: color-mix(in srgb, var(--destructive) 13%, transparent); color: var(--destructive);
+}
+.late-chip:hover { background: color-mix(in srgb, var(--destructive) 22%, transparent); }
+.late-chip:focus-visible { outline: 2px solid var(--ring); }
+.row-late { font-size: 11.5px; font-weight: 600; color: #fff; background: oklch(0.585 0.21 22 / 0.85); border-radius: 999px; padding: 1px 8px; margin-left: 6px; }
+.list.flash { animation: list-flash 1.4s ease-out; }
+.t-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.t-body .ctile-title { cursor: pointer; }
+.sched { display: inline-flex; align-items: center; gap: 3px; font-size: 10.5px; color: var(--muted-foreground); line-height: 1.3; }
+.sched-late { color: var(--destructive); font-weight: 600; }
+.sched-due { color: var(--warn-text); font-weight: 600; }
+.sched-done { color: var(--success); }
+.ctile.flash { animation: list-flash 1.4s ease-out; }
+.wd-row { display: flex; flex-wrap: wrap; gap: 4px; }
+.wd-btn { min-width: 42px; height: 30px; border-radius: 8px; border: 1px solid var(--border); background: var(--background); cursor: pointer; font-size: 12.5px; font-weight: 500; }
+.wd-btn.on { background: var(--primary); color: var(--primary-foreground); border-color: var(--primary); }
+.wd-btn:focus-visible { outline: 2px solid var(--ring); outline-offset: 1px; }
+.sched-status { font-size: 13px; padding: 8px 10px; border-radius: 8px; background: var(--muted); }
+.sched-status.late { background: color-mix(in srgb, var(--destructive) 13%, transparent); color: var(--destructive); }
+.sched-status.due { background: color-mix(in srgb, var(--warning) 24%, transparent); color: var(--warn-text); }
+.sched-status.done { background: color-mix(in srgb, var(--success) 14%, transparent); color: var(--success); }
+@keyframes list-flash { 0%, 40% { box-shadow: 0 0 0 3px var(--destructive), var(--shadow-lift); } 100% { box-shadow: 0 0 0 0 transparent; } }
+.canvas {
+  position: absolute; inset: 0; display: flex; align-items: flex-start; gap: 12px;
+  overflow-x: auto; overflow-y: hidden; padding: 0 12px 18px; scrollbar-width: thin;
+  scrollbar-color: oklch(1 0 0 / .45) transparent;
+}
+.list {
+  position: relative; flex-shrink: 0; max-height: 100%; display: flex; flex-direction: column;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 4px 4px 6px;
+}
+.list-head { display: flex; align-items: center; gap: 1px; padding: 2px 2px 6px; }
+.grip {
+  cursor: grab; color: var(--muted-foreground); touch-action: none; border: 0; background: none;
+  padding: 4px 2px; border-radius: 6px; display: inline-flex;
+}
+.grip:hover { background: var(--muted); }
+.list-title {
+  flex: 1; min-width: 0; background: transparent; border: 0; font-weight: 600; font-size: 14px;
+  padding: 4px 4px; border-radius: 6px; outline: none; text-overflow: ellipsis;
+}
+.list-title:focus { background: var(--background); box-shadow: 0 0 0 2px var(--ring); }
+.list-count { font-size: 12px; color: var(--muted-foreground); padding: 0 4px; }
+.list-cards {
+  display: flex; flex-direction: column; gap: 5px; overflow-y: auto; min-height: 28px; padding: 1px 2px 2px;
+  scrollbar-width: thin; scrollbar-color: oklch(0.6 0.02 240 / .45) transparent;
+}
+.add-card-btn {
+  margin-top: 6px; display: flex; align-items: center; gap: 6px; padding: 7px 8px; border: 0; border-radius: 8px;
+  background: none; color: var(--muted-foreground); font-size: 13px; cursor: pointer; text-align: left;
+}
+.add-card-btn:hover { background: var(--muted); color: var(--foreground); }
+.add-form { margin-top: 6px; display: flex; flex-direction: column; gap: 8px; padding: 0 2px; }
+.seg { display: flex; background: var(--muted); border-radius: 8px; padding: 2px; }
+.seg button { flex: 1; border: 0; background: none; border-radius: 6px; padding: 4px 8px; font-size: 12px; font-weight: 500; color: var(--muted-foreground); cursor: pointer; }
+.seg button.on { background: var(--card); color: var(--foreground); box-shadow: var(--shadow-tile); }
+.hint { font-size: 11px; color: var(--muted-foreground); }
+.list-ph { flex-shrink: 0; border: 2px dashed oklch(1 0 0 / .6); border-radius: 12px; background: oklch(1 0 0 / .12); max-height: 100%; }
+.card-ph { flex-shrink: 0; border: 2px dashed color-mix(in srgb, var(--primary) 55%, transparent); border-radius: 8px; background: color-mix(in srgb, var(--primary) 9%, transparent); }
+.add-list { flex-shrink: 0; width: 240px; }
+.add-list-btn {
+  width: 100%; display: flex; align-items: center; gap: 6px; padding: 10px 12px; border-radius: 12px; border: 0;
+  background: color-mix(in srgb, var(--surface) 72%, transparent); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  font-weight: 500; cursor: pointer; color: var(--foreground);
+}
+.add-list-btn:hover { background: var(--surface); }
+.add-list-form { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 6px; display: flex; flex-direction: column; gap: 8px; }
+
+/* Cartões */
+.ctile {
+  background: var(--card); color: var(--card-foreground); border-radius: 8px; box-shadow: var(--shadow-tile);
+  padding: 7px 9px; cursor: pointer; transition: box-shadow .15s; user-select: none; -webkit-user-select: none;
+  -webkit-touch-callout: none; flex-shrink: 0;
+}
+.ctile:hover { box-shadow: var(--shadow-lift); }
+.ctile-labels { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 6px; }
+.lbl-bar { height: 6px; width: 26px; border-radius: 999px; }
+.ctile-title { font-size: 12.5px; line-height: 1.38; word-break: break-word; }
+.done { color: var(--muted-foreground); text-decoration: line-through; }
+.ctile-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; margin-top: 6px; font-size: 11px; color: var(--muted-foreground); }
+.meta { display: inline-flex; align-items: center; gap: 3px; }
+.meta.full { color: var(--success); }
+.due { display: inline-flex; align-items: center; gap: 3px; border-radius: 4px; padding: 1px 5px; }
+.due-overdue { background: color-mix(in srgb, var(--destructive) 15%, transparent); color: var(--destructive); }
+.due-soon { background: color-mix(in srgb, var(--warning) 26%, transparent); color: var(--warn-text); }
+.due-done { background: color-mix(in srgb, var(--success) 15%, transparent); color: var(--success); }
+.due-upcoming { background: var(--muted); }
+.ttile { display: flex; align-items: center; gap: 7px; padding: 6px 8px; }
+.ttile .ctile-title { flex: 1; min-width: 0; }
+.tdel { border: 0; background: none; color: var(--muted-foreground); cursor: pointer; opacity: 0; transition: opacity .15s; display: inline-flex; padding: 2px; border-radius: 4px; }
+.tdel:hover { color: var(--destructive); }
+.ttile:hover .tdel, .tdel:focus-visible { opacity: 1; }
+@media (hover: none) { .tdel, .ws-tools, .tile-del, .cl-item .x { opacity: 1 !important; } }
+.drag-ghost {
+  position: fixed !important; z-index: 200; pointer-events: none; transform: rotate(2deg); margin: 0 !important;
+  box-shadow: var(--shadow-lift) !important; opacity: .96; left: 0; top: 0;
+}
+body.is-dragging, body.is-dragging * { cursor: grabbing !important; user-select: none; -webkit-user-select: none; }
+.resize {
+  position: absolute; right: 0; bottom: 0; width: 16px; height: 16px; cursor: se-resize; touch-action: none;
+  opacity: .45; color: var(--muted-foreground); z-index: 5; border-bottom-right-radius: 10px;
+  background: linear-gradient(135deg, transparent 50%, currentColor 50%, currentColor 60%, transparent 60%, transparent 75%, currentColor 75%, currentColor 85%, transparent 85%);
+}
+.resize:hover { opacity: 1; }
+
+/* Esteira */
+.pipe { display: flex; flex-direction: column; gap: 6px; }
+.pipe-h { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--muted-foreground); }
+.pipe-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.pipe-step { background: color-mix(in srgb, var(--muted) 75%, transparent); border-radius: 8px; padding: 4px 6px; display: flex; flex-direction: column; gap: 4px; }
+.pipe-step.cur { box-shadow: inset 3px 0 0 var(--primary); }
+.pipe-row { display: flex; align-items: center; gap: 1px; }
+.pipe-n { width: 18px; font-size: 11px; color: var(--muted-foreground); }
+.pipe-t { flex: 1; min-width: 0; font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pipe-auto { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 11.5px; color: var(--muted-foreground); cursor: pointer; }
+
+/* Post-its */
+.note { position: absolute; z-index: 20; display: flex; flex-direction: column; border-radius: 8px; box-shadow: 0 10px 24px oklch(0 0 0 / .25); color: #1f2937; }
+.note-bar { display: flex; align-items: center; gap: 5px; padding: 6px 8px; cursor: move; touch-action: none; }
+.note-dot { width: 13px; height: 13px; border-radius: 50%; border: 1px solid oklch(0 0 0 / .22); padding: 0; cursor: pointer; }
+.note-dot.on { box-shadow: 0 0 0 2px oklch(0 0 0 / .4); }
+.note-del { margin-left: auto; opacity: .6; border: 0; background: none; cursor: pointer; color: inherit; display: inline-flex; padding: 2px; border-radius: 4px; }
+.note-del:hover { opacity: 1; }
+.note textarea {
+  flex: 1; min-height: 0; width: 100%; resize: none; border: 0; background: transparent;
+  padding: 0 10px 12px; font-size: 13px; color: #1f2937; outline: none; line-height: 1.4;
+}
+.note textarea::placeholder { color: oklch(0 0 0 / .42); }
+.note .resize { color: #1f2937; border-bottom-right-radius: 8px; }
+.note-add { position: absolute; right: 16px; bottom: 16px; z-index: 30; box-shadow: var(--shadow-lift); }
+
+/* Janela do cartão */
+.cm-head { display: flex; align-items: flex-start; gap: 10px; padding-right: 36px; }
+.cm-head input[type="checkbox"] { margin-top: 9px; width: 18px; height: 18px; }
+.cm-title {
+  flex: 1; min-width: 0; font-family: "Space Grotesk", sans-serif; font-size: 20px; font-weight: 600; letter-spacing: -0.02em;
+  border: 0; background: transparent; padding: 3px 6px; border-radius: 8px; outline: none;
+  resize: none; overflow: hidden; line-height: 1.3; display: block; width: 100%;
+}
+.cm-title:focus { background: var(--background); box-shadow: 0 0 0 2px var(--ring); }
+.cm-where { font-size: 12.5px; color: var(--muted-foreground); margin: 2px 0 0 34px; }
+.cm-grid { display: grid; grid-template-columns: minmax(0, 1fr) 214px; gap: 28px; margin-top: 18px; }
+.cm-sec { margin-bottom: 26px; }
+.cm-sec h3 { display: flex; align-items: center; gap: 7px; font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+.desc-view { min-height: 64px; padding: 8px 10px; border-radius: 8px; cursor: text; font-size: 14px; background: color-mix(in srgb, var(--muted) 45%, transparent); }
+.desc-view:hover { background: var(--muted); }
+.md p, .md ul, .md ol, .md blockquote { margin: 0 0 8px; }
+.md > :last-child { margin-bottom: 0; }
+.md ul, .md ol { padding-left: 20px; }
+.md a { color: var(--primary); }
+.md code { background: var(--muted); padding: 1px 4px; border-radius: 4px; font-size: 12.5px; }
+.md h4 { font-size: 15px; margin: 6px 0 4px; }
+.md blockquote { border-left: 3px solid var(--border); padding-left: 10px; color: var(--muted-foreground); }
+.cl { margin-bottom: 18px; }
+.cl-head { display: flex; align-items: center; gap: 8px; }
+.cl-name { flex: 1; min-width: 0; border: 0; background: transparent; font-weight: 600; font-size: 13.5px; padding: 3px 4px; border-radius: 6px; outline: none; }
+.cl-name:focus { background: var(--background); box-shadow: 0 0 0 2px var(--ring); }
+.progress { height: 6px; border-radius: 999px; background: var(--muted); overflow: hidden; margin: 6px 0 8px; }
+.progress > span { display: block; height: 100%; background: var(--primary); transition: width .2s; }
+.progress.full > span { background: var(--success); }
+.cl-items { list-style: none; margin: 0 0 8px; padding: 0; }
+.cl-item { display: flex; align-items: center; gap: 9px; padding: 3px 4px; border-radius: 6px; }
+.cl-item:hover { background: color-mix(in srgb, var(--muted) 60%, transparent); }
+.cl-text { flex: 1; min-width: 0; font-size: 13.5px; word-break: break-word; }
+.cl-item .x { opacity: 0; }
+.cl-item:hover .x, .cl-item .x:focus-visible { opacity: 1; }
+.att { display: flex; align-items: center; gap: 8px; font-size: 13.5px; padding: 3px 0; }
+.att a { color: var(--primary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.att-form { display: grid; grid-template-columns: 1fr 1.4fr auto; gap: 6px; margin-top: 6px; }
+.comment { display: flex; gap: 10px; margin-top: 12px; }
+.comment .body { flex: 1; min-width: 0; }
+.comment .who { font-size: 12.5px; font-weight: 600; }
+.comment .who span { font-weight: 400; color: var(--muted-foreground); margin-left: 6px; }
+.comment .txt { font-size: 13.5px; white-space: pre-wrap; word-break: break-word; }
+.hist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--muted-foreground); }
+.side-sec { display: flex; flex-direction: column; gap: 6px; margin-bottom: 18px; }
+.side-h { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--muted-foreground); }
+.chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.chip { display: inline-flex; align-items: center; gap: 4px; border-radius: 6px; padding: 2px 8px; font-size: 12px; color: #fff; font-weight: 600; }
+.inline-panel { border: 1px solid var(--border); border-radius: 10px; padding: 4px; background: var(--background); }
+.lbl-new { display: grid; grid-template-columns: 1fr auto; gap: 6px; padding: 6px 4px 2px; }
+.color-row { display: flex; flex-wrap: wrap; gap: 4px; grid-column: 1 / -1; }
+.color-opt { width: 20px; height: 20px; border-radius: 5px; border: 2px solid transparent; cursor: pointer; padding: 0; }
+.color-opt.on { border-color: var(--foreground); }
+.date-row { display: grid; grid-template-columns: 1fr; gap: 6px; }
+.move-row { display: flex; gap: 4px; }
+.move-row .btn { flex: 1; }
+
+/* Meus cartões e busca */
+.page { max-width: 780px; margin: 0 auto; padding: 32px 16px 48px; }
+.page h1 { font-size: 26px; font-weight: 700; }
+.page h2 { font-size: 14px; font-weight: 600; margin: 26px 0 8px; color: var(--muted-foreground); font-family: "DM Sans", sans-serif; letter-spacing: 0; }
+.mc-list { display: flex; flex-direction: column; gap: 8px; }
+.mc-item {
+  display: flex; gap: 12px; align-items: flex-start; width: 100%; text-align: left; border: 1px solid var(--border);
+  background: var(--card); border-radius: 12px; padding: 12px 14px; cursor: pointer; transition: box-shadow .15s;
+}
+.mc-item:hover { box-shadow: var(--shadow-lift); }
+.mc-item .swatch { width: 6px; height: auto; align-self: stretch; border-radius: 3px; }
+.mc-item .t { font-weight: 500; }
+.mc-item .w { font-size: 12px; color: var(--muted-foreground); margin-top: 2px; }
+.mc-item .due { margin-top: 6px; font-size: 11.5px; }
+.search-inp { height: 44px; font-size: 15px; }
+.res-h { font-size: 12px; font-weight: 600; color: var(--muted-foreground); margin: 14px 0 4px; }
+.res { display: flex; align-items: center; gap: 10px; width: 100%; padding: 8px; border: 0; background: none; border-radius: 8px; text-align: left; cursor: pointer; }
+.res:hover, .res.sel { background: var(--muted); }
+.res small { color: var(--muted-foreground); margin-left: auto; font-size: 12px; white-space: nowrap; }
+
+/* Avisos */
+.toasts {
+  position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%);
+  z-index: 300; display: flex; flex-direction: column; gap: 8px; align-items: center; pointer-events: none;
+  width: max-content; max-width: calc(100vw - 24px);
+}
+.toast {
+  pointer-events: auto; background: var(--popover); color: var(--popover-foreground); border: 1px solid var(--border);
+  border-radius: 10px; padding: 10px 14px; box-shadow: var(--shadow-lift); font-size: 13px; display: flex; align-items: center; gap: 9px;
+  animation: dlg-in .18s ease-out;
+}
+.toast .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--primary); flex-shrink: 0; }
+.toast-success .dot { background: var(--success); }
+.toast-error .dot { background: var(--destructive); }
+
+.show-sm { display: none; }
+@media (max-width: 900px) { .search-trigger { width: auto; } .search-trigger .lbl, .search-trigger kbd { display: none; } }
+@media (max-width: 760px) {
+  .home { flex-direction: column; gap: 18px; padding: 20px 12px 40px; }
+  .ws-side { width: auto; }
+  .ws-list { flex-direction: row; overflow-x: auto; gap: 6px; padding-bottom: 4px; }
+  .ws-item { flex-shrink: 0; border: 1px solid var(--border); }
+  .cm-grid { grid-template-columns: 1fr; }
+  .board-tools { margin-left: 0; width: 100%; }
+  .filter-inp { flex: 1; width: auto; min-width: 120px; }
+}
+@media (max-width: 640px) {
+  .hide-sm { display: none !important; }
+  .show-sm { display: inline-flex; }
+  .hdr { padding: 0 10px; gap: 4px; }
+  .att-form { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+</style>
+</head>
+<body>
+<div id="root"><div class="loading"><p class="muted">Carregando o Flowtify…</p></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/htm@3.1.1/dist/htm.umd.js"></script>
+<script>
+'use strict';
+const { useState, useEffect, useRef, useMemo, useSyncExternalStore, Fragment } = React;
+const html = htm.bind(React.createElement);
+
+/* ---------- Utilitários ---------- */
+const LS = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* armazenamento indisponível */ } },
+};
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 9);
+const now = () => new Date().toISOString();
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const byPos = (a, b) => (a.position ?? 0) - (b.position ?? 0);
+
+/** Posição fracionária entre dois vizinhos (padrão Trello). */
+function positionBetween(before, after) {
+  if (before === undefined && after === undefined) return 1000;
+  if (before === undefined) return after / 2;
+  if (after === undefined) return before + 1000;
+  return (before + after) / 2;
+}
+function initials(name) {
+  const base = (name || '?').trim() || '?';
+  const p = base.split(/\s+/);
+  return (((p[0] || '')[0] || '') + ((p[1] || '')[0] || '')).toUpperCase() || base[0].toUpperCase();
+}
+function hueOf(s) { let h = 0; for (const ch of String(s)) h = (h * 31 + ch.charCodeAt(0)) % 360; return h; }
+function parseDay(s) { if (!s) return null; const [y, m, d] = String(s).slice(0, 10).split('-').map(Number); return new Date(y, m - 1, d); }
+function dueState(due, completed) {
+  if (!due) return 'none';
+  if (completed) return 'done';
+  const end = parseDay(due); end.setHours(23, 59, 59, 999);
+  const diff = end.getTime() - Date.now();
+  if (diff < 0) return 'overdue';
+  if (diff < 864e5) return 'soon';
+  return 'upcoming';
+}
+const fmtDay = (s) => parseDay(s).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' }).replace('.', '');
+const fmtDayLong = (s) => parseDay(s).toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+const fmtWhen = (iso) => new Date(iso).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
+
+const BACKGROUNDS = [
+  { key: 'aurora', label: 'Aurora' }, { key: 'citrus', label: 'Cítrico' }, { key: 'forest', label: 'Floresta' },
+  { key: 'dusk', label: 'Crepúsculo' }, { key: 'slate', label: 'Ardósia' }, { key: 'rose', label: 'Rosé' },
+];
+const bgStyle = (key) => ({ backgroundImage: `var(--bg-${BACKGROUNDS.some((b) => b.key === key) ? key : 'aurora'})` });
+const LABEL_COLORS = ['green', 'yellow', 'orange', 'red', 'purple', 'blue', 'sky', 'lime', 'pink', 'gray'];
+const LABEL_NAMES = { green: 'Verde', yellow: 'Amarelo', orange: 'Laranja', red: 'Vermelho', purple: 'Roxo', blue: 'Azul', sky: 'Céu', lime: 'Lima', pink: 'Rosa', gray: 'Cinza' };
+const lblStyle = (c) => ({ backgroundColor: `var(--label-${c})` });
+const NOTE_COLORS = { yellow: '#fde68a', pink: '#fbcfe8', green: '#bbf7d0', blue: '#bfdbfe' };
+const NOTE_NAMES = { yellow: 'amarelo', pink: 'rosa', green: 'verde', blue: 'azul' };
+const DEFAULT_LIST_W = 248;
+
+/* ---------- Markdown simples e seguro ---------- */
+function esc(s) { return String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+function inlineMd(s) {
+  return s
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/(^|[^*])\*([^*\s][^*]*)\*/g, '$1<em>$2</em>')
+    .replace(/~~([^~]+)~~/g, '<del>$1</del>')
+    .replace(/\[([^\]]+)\]\(((?:https?:\/\/|mailto:)[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
+    .replace(/(^|[\s(])(https?:\/\/[^\s<)]+)/g, '$1<a href="$2" target="_blank" rel="noopener noreferrer">$2</a>');
+}
+function renderMd(src) {
+  const lines = esc(src || '').split(/\r?\n/);
+  let out = ''; let list = null; let para = [];
+  const flushP = () => { if (para.length) { out += '<p>' + para.map(inlineMd).join('<br>') + '</p>'; para = []; } };
+  const flushL = () => { if (list) { out += `<${list.t}>` + list.items.map((i) => '<li>' + inlineMd(i) + '</li>').join('') + `</${list.t}>`; list = null; } };
+  for (const raw of lines) {
+    const line = raw.replace(/\s+$/, ''); let m;
+    if (!line.trim()) { flushP(); flushL(); continue; }
+    if ((m = line.match(/^\s*#{1,6}\s+(.*)$/))) { flushP(); flushL(); out += '<h4>' + inlineMd(m[1]) + '</h4>'; continue; }
+    if ((m = line.match(/^\s*[-*+]\s+(?:\[( |x|X)\]\s+)?(.*)$/))) {
+      flushP(); if (!list || list.t !== 'ul') { flushL(); list = { t: 'ul', items: [] }; }
+      list.items.push((m[1] !== undefined ? (m[1].trim() ? '☑ ' : '☐ ') : '') + m[2]); continue;
+    }
+    if ((m = line.match(/^\s*\d+[.)]\s+(.*)$/))) { flushP(); if (!list || list.t !== 'ol') { flushL(); list = { t: 'ol', items: [] }; } list.items.push(m[1]); continue; }
+    if ((m = line.match(/^&gt;\s?(.*)$/))) { flushP(); flushL(); out += '<blockquote>' + inlineMd(m[1]) + '</blockquote>'; continue; }
+    flushL(); para.push(line);
+  }
+  flushP(); flushL();
+  return out;
+}
+
+/* ---------- Avisos (toasts) ---------- */
+const ToastStore = { list: [], subs: new Set(), v: 0 };
+function toastEmit() { ToastStore.v++; ToastStore.subs.forEach((f) => f()); }
+function toast(msg, kind = 'info') {
+  const t = { id: uid(), msg, kind };
+  ToastStore.list = [...ToastStore.list, t].slice(-4); toastEmit();
+  setTimeout(() => { ToastStore.list = ToastStore.list.filter((x) => x.id !== t.id); toastEmit(); }, kind === 'error' ? 6500 : 3600);
+}
+
+/* ---------- Banco de dados ----------
+ * No link publicado, os dados ficam no banco compartilhado do artifact (tempo real
+ * para todos que abrem o link). Sem ele (prévia ou sem acesso), tudo fica no navegador.
+ */
+const SHARED = ['people', 'workspaces', 'boards', 'lists', 'cards'];
+const Data = { people: {}, workspaces: {}, boards: {}, lists: {}, cards: {}, notes: {} };
+const Backend = { mode: 'loading', notesMode: 'local', db: null, notesPath: null, ready: new Set(), warned: {} };
+let version = 0; const subs = new Set();
+function emit() { version++; subs.forEach((f) => f()); }
+function subscribeData(f) { subs.add(f); return () => subs.delete(f); }
+function useData() { return useSyncExternalStore(subscribeData, () => version); }
+
+const LOCAL_KEY = 'flowtify:local:v1';
+const NOTES_KEY = 'flowtify:notes:v1';
+let saveTimer = 0;
+function saveLocalNow() {
+  clearTimeout(saveTimer); saveTimer = 0;
+  if (Backend.mode === 'local') { const o = {}; for (const c of SHARED) o[c] = Data[c]; LS.set(LOCAL_KEY, o); }
+  if (Backend.notesMode === 'local') LS.set(NOTES_KEY, Data.notes);
+}
+function saveLocalSoon() { clearTimeout(saveTimer); saveTimer = setTimeout(saveLocalNow, 150); }
+window.addEventListener('pagehide', () => { if (saveTimer) saveLocalNow(); });
+
+// Fila de escrita: uma escrita por vez por documento, com no máximo 6 em paralelo.
+const queue = new Map();
+let activeWrites = 0; const waiting = [];
+function acquireSlot() { if (activeWrites < 6) { activeWrites++; return Promise.resolve(); } return new Promise((r) => waiting.push(r)); }
+function releaseSlot() { const n = waiting.shift(); if (n) n(); else activeWrites--; }
+function mergeOp(prev, op) {
+  if (!prev || op.t !== 'update') return op;
+  if (prev.t === 'del') return prev;
+  return { t: prev.t, d: { ...prev.d, ...op.d } };
+}
+function applyOp(map, id, op) {
+  if (!op) return;
+  if (op.t === 'del') delete map[id];
+  else if (op.t === 'set') map[id] = { ...op.d, id };
+  else if (map[id]) map[id] = { ...map[id], ...op.d };
+}
+const isLocal = (col) => (col === 'notes' ? Backend.notesMode === 'local' : Backend.mode === 'local');
+function write(col, id, op) {
+  if (isLocal(col)) { saveLocalSoon(); return; }
+  const key = col + '|' + id;
+  let e = queue.get(key);
+  if (!e) { e = { col, id, inflight: null, next: null }; queue.set(key, e); }
+  e.next = mergeOp(e.next, op);
+  if (!e.inflight) drain(key, e);
+}
+async function drain(key, e) {
+  while (e.next) {
+    const op = e.next; e.next = null; e.inflight = op;
+    await acquireSlot();
+    try { await perform(e.col, e.id, op, 0); } catch (err) { reportWriteError(err); } finally { releaseSlot(); }
+    e.inflight = null;
+  }
+  if (queue.get(key) === e) queue.delete(key);
+}
+async function perform(col, id, op, attempt) {
+  const ref = Backend.db.collection(col === 'notes' ? Backend.notesPath : col).doc(id);
+  try {
+    if (op.t === 'set') await ref.set(op.d);
+    else if (op.t === 'update') await ref.update(op.d);
+    else await ref.delete();
+  } catch (err) {
+    const code = err && err.code;
+    if ((code === 'unavailable' || code === 'resource_exhausted') && attempt < 2) {
+      await sleep(600 * (attempt + 1) + Math.random() * 600);
+      return perform(col, id, op, attempt + 1);
+    }
+    throw err;
+  }
+}
+function warnOnce(key, msg) { if (Backend.warned[key]) return; Backend.warned[key] = true; toast(msg, 'error'); setTimeout(() => { Backend.warned[key] = false; }, 20000); }
+function reportWriteError(err) {
+  const code = err && err.code;
+  if (code === 'invalid_argument') warnOnce('ro', 'Não foi possível salvar: seu acesso a este app é só de leitura. Peça acesso de colaborador a quem compartilhou o link.');
+  else if (code === 'quota_exceeded') warnOnce('quota', 'O espaço de armazenamento está cheio. Exclua quadros ou cartões antigos para continuar salvando.');
+  else if (code === 'revoked') warnOnce('rev', 'O acesso a este app mudou. Recarregue a página.');
+  else warnOnce('net', 'Uma alteração não foi salva. Verifique a conexão e tente de novo.');
+}
+function clean(obj) { const o = JSON.parse(JSON.stringify(obj)); delete o.id; return o; }
+function put(col, id, obj) { const d = clean(obj); Data[col] = { ...Data[col], [id]: { ...d, id } }; emit(); write(col, id, { t: 'set', d }); }
+function patch(col, id, p) {
+  const cur = Data[col][id]; if (!cur) return;
+  const d = clean(p); Data[col] = { ...Data[col], [id]: { ...cur, ...d } }; emit(); write(col, id, { t: 'update', d });
+}
+function remove(col, id) { if (!Data[col][id]) return; const m = { ...Data[col] }; delete m[id]; Data[col] = m; emit(); write(col, id, { t: 'del' }); }
+function removeMany(col, ids) {
+  if (!ids.length) return; const m = { ...Data[col] };
+  for (const id of ids) delete m[id]; Data[col] = m; emit();
+  for (const id of ids) write(col, id, { t: 'del' });
+}
+
+function onSnap(col, snap) {
+  const m = {};
+  for (const d of snap.docs) { const v = d.data(); if (v) m[d.id] = { ...v, id: d.id }; }
+  for (const e of queue.values()) { if (e.col !== col) continue; applyOp(m, e.id, e.inflight); applyOp(m, e.id, e.next); }
+  Data[col] = m; Backend.ready.add(col); emit();
+}
+function listen(col, path) {
+  const start = () => {
+    Backend.db.collection(path).onSnapshot((s) => onSnap(col, s), (err) => {
+      const code = err && err.code;
+      Backend.ready.add(col); emit();
+      if (code === 'unavailable' || code === 'resource_exhausted') setTimeout(start, 4000);
+      else if (code === 'revoked') warnOnce('rev', 'O acesso a este app mudou. Recarregue a página.');
+    });
+  };
+  start();
+}
+function loadLocalNotes() { Backend.notesMode = 'local'; Data.notes = LS.get(NOTES_KEY, {}) || {}; Backend.ready.add('notes'); }
+function startLocal() {
+  Backend.mode = 'local';
+  const o = LS.get(LOCAL_KEY, {}) || {};
+  for (const c of SHARED) { Data[c] = o[c] || {}; Backend.ready.add(c); }
+  loadLocalNotes(); emit();
+}
+async function initBackend() {
+  if (!window.claude || typeof window.claude.use !== 'function') { startLocal(); return; }
+  let db = null;
+  try { db = await window.claude.use('db'); } catch (e) { db = null; }
+  if (!db) { startLocal(); return; }
+  Backend.db = db; Backend.mode = 'db';
+  for (const c of SHARED) listen(c, c);
+  emit();
+  // Post-its são privados: ficam na área pessoal de cada conta.
+  let id = null;
+  try { const u = await window.claude.use('user'); id = u ? await u.id() : null; } catch (e) { id = null; }
+  if (id) {
+    try { const path = 'data/users/' + id; db.collection(path); Backend.notesPath = path; Backend.notesMode = 'db'; listen('notes', path); }
+    catch (e) { loadLocalNotes(); }
+  } else loadLocalNotes();
+  emit();
+}
+
+/* ---------- Pessoa atual ---------- */
+const Me = { id: LS.get('flowtify:me', null) };
+function setMe(id) { Me.id = id; LS.set('flowtify:me', id); emit(); }
+
+/* ---------- Consultas ---------- */
+const byCreated = (a, b) => String(a.createdAt || '').localeCompare(String(b.createdAt || ''));
+function myWorkspaces() { return Object.values(Data.workspaces).filter((w) => (w.memberIds || []).includes(Me.id)).sort(byCreated); }
+function boardsOf(wsId) { return Object.values(Data.boards).filter((b) => b.workspaceId === wsId).sort(byPos); }
+function listsOf(boardId) { return Object.values(Data.lists).filter((l) => l.boardId === boardId).sort(byPos); }
+function cardsOfBoard(boardId) { return Object.values(Data.cards).filter((c) => c.boardId === boardId); }
+function cardsOfList(listId) { return Object.values(Data.cards).filter((c) => c.listId === listId).sort(byPos); }
+function membersOfWs(ws) { return (ws?.memberIds || []).map((id) => Data.people[id]).filter(Boolean); }
+function canSeeBoard(b) { const ws = b && Data.workspaces[b.workspaceId]; return !!ws && (ws.memberIds || []).includes(Me.id); }
+function personName(id) { return Data.people[id]?.name || 'Alguém'; }
+function lastPos(listId, exceptId) {
+  let m = 0;
+  for (const c of Object.values(Data.cards)) if (c.listId === listId && c.id !== exceptId && c.position > m) m = c.position;
+  return m;
+}
+
+/* ---------- Ações ---------- */
+function logged(card, ...actions) {
+  let acts = card.activities || [];
+  for (const a of actions) acts = [{ id: uid(), personId: Me.id, action: a, at: now() }, ...acts];
+  return acts.slice(0, 40);
+}
+function cardDefaults() {
+  return {
+    description: '', startDate: null, dueDate: null, isCompleted: false, isTask: false,
+    labelIds: [], memberIds: [], checklists: [], attachments: [], comments: [], activities: [],
+    pipelineListIds: [], pipelineAuto: true, pipelineOwners: [],
+  };
+}
+function createWorkspace(name) {
+  const id = uid();
+  put('workspaces', id, { name, ownerId: Me.id, memberIds: [Me.id], createdAt: now() });
+  return id;
+}
+function createBoard(wsId, title, background) {
+  const id = uid();
+  const pos = Math.max(0, ...boardsOf(wsId).map((b) => b.position || 0)) + 1000;
+  put('boards', id, {
+    workspaceId: wsId, title, background, position: pos, createdAt: now(), createdBy: Me.id,
+    labels: [{ id: uid(), name: 'Urgente', color: 'red' }, { id: uid(), name: 'Melhoria', color: 'green' }, { id: uid(), name: 'Bug', color: 'orange' }],
+  });
+  ['A Fazer', 'Em Andamento', 'Concluído'].forEach((t, i) => put('lists', uid(), { boardId: id, title: t, position: (i + 1) * 1000 }));
+  return id;
+}
+function deleteBoard(id) {
+  removeMany('cards', cardsOfBoard(id).map((c) => c.id));
+  removeMany('lists', listsOf(id).map((l) => l.id));
+  removeMany('notes', Object.values(Data.notes).filter((n) => n.boardId === id).map((n) => n.id));
+  remove('boards', id);
+}
+function deleteWorkspace(id) { boardsOf(id).forEach((b) => deleteBoard(b.id)); remove('workspaces', id); }
+/* Marcador de dias: a lista fica em dia quando todos os cartões dela são concluídos.
+ * Contam só dias úteis (segunda a sexta). */
+function ymd(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+const todayStr = () => ymd(new Date());
+const isBizDay = (d) => d.getDay() !== 0 && d.getDay() !== 6;
+function prevBizDay(d) { const x = new Date(d); do { x.setDate(x.getDate() - 1); } while (!isBizDay(x)); return x; }
+function lateLists(lists, tracking) {
+  return lists.map((l) => ({ l, s: listStatus(l, tracking) })).filter((x) => x.s && x.s.k === 'late' && cardsOfList(x.l.id).length > 0);
+}
+const daysTxt = (n) => plural(n, 'dia', 'dias');
+
+/* Repetição de tarefas: em cada data marcada a tarefa precisa ser concluída;
+ * se a data passar sem conclusão, ela fica atrasada. doneFor = data de execução que a conclusão cobre. */
+const WD_FULL = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'];
+const WD_SHORT = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+const WD_ORDER = [1, 2, 3, 4, 5, 6, 0];
+function occursOn(sch, d) {
+  if (!sch) return false;
+  if (sch.type === 'weekly') return (sch.days || []).includes(d.getDay());
+  if (sch.type === 'monthly') { const last = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate(); return d.getDate() === Math.min(sch.day || 1, last); }
+  return false;
+}
+function lastOccurrence(sch, today) {
+  const since = sch.since || '2000-01-01'; const x = new Date(today);
+  for (let i = 0; i < 400; i++) { const k = ymd(x); if (k < since) return null; if (occursOn(sch, x)) return k; x.setDate(x.getDate() - 1); }
+  return null;
+}
+function nextOccurrence(sch, afterStr) {
+  const x = parseDay(afterStr);
+  for (let i = 0; i < 400; i++) { x.setDate(x.getDate() + 1); if (occursOn(sch, x)) return ymd(x); }
+  return null;
+}
+function schedStatusRaw(sch, doneFor, lastDone) {
+  if (!sch || !sch.type) return null;
+  const today = new Date(); today.setHours(0, 0, 0, 0); const t = ymd(today);
+  const yest = new Date(today); yest.setDate(yest.getDate() - 1);
+  doneFor = doneFor || null;
+  const P = lastOccurrence(sch, yest);   // última data antes de hoje
+  const L = lastOccurrence(sch, today);  // última data até hoje (inclusive)
+  if (P && !(doneFor && doneFor >= P)) {
+    // Atrasada: primeira data perdida depois da última conclusão.
+    const startStr = doneFor && doneFor >= (sch.since || '') ? doneFor : null;
+    const x = parseDay(startStr || sch.since || P); if (startStr) x.setDate(x.getDate() + 1);
+    let first = null; let n = 0;
+    for (let i = 0; i < 800 && ymd(x) <= P; i++) { if (occursOn(sch, x)) { if (!first) first = ymd(x); n++; } x.setDate(x.getDate() + 1); }
+    return { k: 'late', last: L, since: first || P, missed: Math.max(1, n) };
+  }
+  if (L === t && !(doneFor && doneFor >= L)) return { k: 'due', last: L };
+  // Marcada no dia em que foi feita, ou até a data que uma conclusão antecipada cobre.
+  if (doneFor && (doneFor >= t || lastDone === t)) return { k: 'done', doneFor, next: nextOccurrence(sch, doneFor > t ? doneFor : t) };
+  return { k: 'upcoming', next: nextOccurrence(sch, t) };
+}
+function schedStatus(card) { return card.schedule && card.schedule.type ? schedStatusRaw(card.schedule, card.doneFor, card.lastDoneDate) : null; }
+/** Prazo de uma lista: repetição própria ou, com o marcador de dias, todo dia útil. */
+function listStatus(list, tracking) {
+  const custom = !!(list.schedule && list.schedule.type);
+  if (!custom && !tracking) return null;
+  const sch = custom ? list.schedule : { type: 'weekly', days: [1, 2, 3, 4, 5], since: list.lastDoneDate ? '2000-01-01' : todayStr() };
+  const st = schedStatusRaw(sch, custom ? list.doneFor : list.lastDoneDate, list.lastDoneDate);
+  return { ...st, custom, sch };
+}
+function dayStatus(list) {
+  const st = listStatus({ ...list, schedule: null }, true);
+  return st.k === 'late' ? { k: 'late', n: st.missed } : st.k === 'due' ? { k: 'today' } : { k: 'ok' };
+}
+function schedLabel(s) {
+  if (!s || !s.type) return '';
+  if (s.type === 'monthly') return `Todo dia ${s.day}`;
+  const d = WD_ORDER.filter((x) => (s.days || []).includes(x));
+  if (d.join() === '1,2,3,4,5') return 'Dias úteis';
+  if (d.length === 7) return 'Todo dia';
+  if (d.length === 1) return (d[0] === 0 || d[0] === 6 ? 'Todo ' : 'Toda ') + WD_FULL[d[0]];
+  const names = d.map((x) => WD_SHORT[x]);
+  return names.slice(0, -1).join(', ') + ' e ' + names[names.length - 1];
+}
+const fmtWd = (s) => parseDay(s).toLocaleDateString('pt-BR', { weekday: 'short', day: '2-digit', month: '2-digit' }).replace('.', '');
+function schedText(st) {
+  if (!st) return '';
+  if (st.k === 'due') return 'vence hoje';
+  if (st.k === 'late') return `atrasada desde ${fmtWd(st.since)}`;
+  if (st.k === 'done') return st.doneFor > todayStr() ? `feita, vale para ${fmtWd(st.doneFor)}` : 'feita hoje';
+  return st.next ? `próxima: ${fmtWd(st.next)}` : '';
+}
+/** Conta como concluído para o marcador de dias da lista. */
+function countsAsDone(c) {
+  if (c.schedule && c.schedule.type) { const st = schedStatus(c); return st.k === 'done' || st.k === 'upcoming'; }
+  return !!c.isCompleted;
+}
+/** Marcar ou desmarcar uma tarefa (com ou sem repetição). */
+/** Desmarca qualquer cartão; numa tarefa com repetição, desfaz a última conclusão (volta a ficar pendente). */
+function uncheckCard(card) {
+  if (card.schedule && card.schedule.type) {
+    patch('cards', card.id, { isCompleted: false, doneFor: card.prevDoneFor || null, prevDoneFor: null, lastDoneDate: card.prevLastDone || null, prevLastDone: null });
+  } else patch('cards', card.id, { isCompleted: false });
+}
+function checkTask(card, v) {
+  if (!card.schedule || !card.schedule.type) {
+    patch('cards', card.id, { isCompleted: v, lastDoneDate: v ? todayStr() : (card.lastDoneDate || null), activities: logged(card, v ? 'concluiu a tarefa' : 'reabriu a tarefa') });
+    return;
+  }
+  if (v) {
+    const st = schedStatus(card);
+    const cover = st.k === 'due' || st.k === 'late' ? st.last : st.next;
+    patch('cards', card.id, { isCompleted: true, prevDoneFor: card.doneFor || null, prevLastDone: card.lastDoneDate || null, doneFor: cover, lastDoneDate: todayStr(),
+      activities: logged(card, cover ? `concluiu a tarefa (execução de ${fmtWd(cover)})` : 'concluiu a tarefa') });
+  } else {
+    patch('cards', card.id, { isCompleted: false, doneFor: card.prevDoneFor || null, prevDoneFor: null, lastDoneDate: card.prevLastDone || null, prevLastDone: null, activities: logged(card, 'reabriu a tarefa') });
+  }
+}
+
+/* Linhas do quadro: cada lista pertence a uma linha; sem linha válida, fica na primeira. */
+function boardRows(board) { return (board && board.rows) || []; }
+function effRowId(list, rows) { return rows.some((r) => r.id === list.rowId) ? list.rowId : (rows[0]?.id ?? null); }
+function orderedLists(board) {
+  const lists = listsOf(board.id); const rows = boardRows(board);
+  if (!rows.length) return lists;
+  const out = [];
+  for (const r of rows) for (const l of lists) if (effRowId(l, rows) === r.id) out.push(l);
+  return out;
+}
+/** Grava a linha de cada lista que ainda não tem uma válida, para que nada mude de lugar sozinho. */
+function pinLists(boardId, rows) {
+  if (!rows.length) return;
+  for (const l of listsOf(boardId)) if (!rows.some((r) => r.id === l.rowId)) patch('lists', l.id, { rowId: rows[0].id });
+}
+function addRow(board, name) {
+  const id = uid();
+  const rows = [...boardRows(board), { id, name }];
+  pinLists(board.id, rows);
+  patch('boards', board.id, { rows });
+  return id;
+}
+function renameRow(board, rowId, name) { patch('boards', board.id, { rows: boardRows(board).map((r) => (r.id === rowId ? { ...r, name } : r)) }); }
+function moveRow(board, rowId, delta) {
+  const rows = [...boardRows(board)]; const i = rows.findIndex((r) => r.id === rowId); const j = i + delta;
+  if (i < 0 || j < 0 || j >= rows.length) return;
+  pinLists(board.id, rows);
+  [rows[i], rows[j]] = [rows[j], rows[i]]; patch('boards', board.id, { rows });
+}
+function deleteRow(board, rowId) {
+  const rows = boardRows(board); const i = rows.findIndex((r) => r.id === rowId);
+  pinLists(board.id, rows);
+  const target = rows[i - 1] || rows[i + 1] || null;
+  const all = listsOf(board.id);
+  let base = Math.max(0, ...all.map((l) => l.position || 0));
+  for (const l of all.filter((x) => effRowId(x, rows) === rowId)) { base += 1000; patch('lists', l.id, { rowId: target ? target.id : null, position: base }); }
+  patch('boards', board.id, { rows: rows.filter((r) => r.id !== rowId) });
+  return target;
+}
+function deleteList(list) { removeMany('cards', cardsOfList(list.id).map((c) => c.id)); remove('lists', list.id); }
+function duplicateList(list) {
+  const lists = listsOf(list.boardId);
+  const i = lists.findIndex((l) => l.id === list.id);
+  const nid = uid();
+  put('lists', nid, { boardId: list.boardId, schedule: list.schedule && list.schedule.type ? { ...list.schedule, since: todayStr() } : null, rowId: effRowId(list, boardRows(Data.boards[list.boardId])), title: `${list.title} (cópia)`, position: positionBetween(list.position, lists[i + 1]?.position) });
+  for (const c of cardsOfList(list.id)) {
+    put('cards', uid(), {
+      ...cardDefaults(), boardId: c.boardId, listId: nid, title: c.title, description: c.description || '',
+      position: c.position, isTask: !!c.isTask, isCompleted: false, createdAt: now(), createdBy: Me.id,
+      schedule: c.schedule && c.schedule.type ? { ...c.schedule, since: todayStr() } : null,
+    });
+  }
+  toast('Lista duplicada', 'success');
+}
+
+/**
+ * Esteira automática: quando todos os itens do checklist ficam concluídos, o cartão
+ * avança para a próxima lista da sequência; o responsável da etapa assume o cartão;
+ * na última etapa ele é marcado como concluído.
+ */
+function pipelineAdvance(card) {
+  if (!card.pipelineAuto) return null;
+  const steps = card.pipelineListIds || [];
+  if (steps.length < 2) return null;
+  const i = steps.indexOf(card.listId);
+  if (i < 0 || i === steps.length - 1) return null;
+  const items = (card.checklists || []).flatMap((c) => c.items || []);
+  if (!items.length || items.some((x) => !x.checked)) return null;
+  const nextId = steps[i + 1];
+  const target = Data.lists[nextId];
+  if (!target) return null;
+  const isLast = i + 1 === steps.length - 1;
+  const owner = (card.pipelineOwners || []).find((o) => o.listId === nextId)?.personId;
+  const acts = [`esteira: moveu o cartão para “${target.title}”`];
+  const out = { listId: nextId, position: lastPos(nextId, card.id) + 1000 };
+  if (isLast) out.isCompleted = true;
+  if (owner && Data.people[owner]) { out.memberIds = [owner]; acts.push(`esteira: cartão atribuído a ${Data.people[owner].name}`); }
+  out.activities = logged(card, ...acts);
+  return { patch: out, target, owner: owner && Data.people[owner] };
+}
+
+/* ---------- Ícones (traço no estilo Lucide) ---------- */
+const ICONS = {
+  plus: '<path d="M5 12h14"/><path d="M12 5v14"/>',
+  x: '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
+  trash: '<path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><path d="M10 11v6"/><path d="M14 11v6"/>',
+  copy: '<rect x="8" y="8" width="14" height="14" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>',
+  grip: '<circle cx="9" cy="12" r="1"/><circle cx="9" cy="5" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="19" r="1"/>',
+  rotate: '<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>',
+  filter: '<path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/>',
+  listRestart: '<path d="M21 6H3"/><path d="M7 12H3"/><path d="M7 18H3"/><path d="M12 18a5 5 0 0 0 9-3 4.5 4.5 0 0 0-4.5-4.5c-1.33 0-2.54.54-3.41 1.41L11 14"/><path d="M11 10v4h4"/>',
+  pencil: '<path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/>',
+  search: '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
+  sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>',
+  moon: '<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>',
+  grid: '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/>',
+  chevronDown: '<path d="m6 9 6 6 6-6"/>',
+  chevronRight: '<path d="m9 18 6-6-6-6"/>',
+  repeat: '<path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/>',
+  userCheck: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="m16 11 2 2 4-4"/>',
+  calendar: '<path d="M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3.5"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h5"/><path d="M17.5 17.5 16 16.3V14"/><circle cx="16" cy="16" r="6"/>',
+  checkSquare: '<path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',
+  message: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+  clip: '<path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/>',
+  link: '<path d="M9 17H7A5 5 0 0 1 7 7h2"/><path d="M15 7h2a5 5 0 1 1 0 10h-2"/><path d="M8 12h8"/>',
+  users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  userPlus: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6"/><path d="M22 11h-6"/>',
+  tag: '<path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/>',
+  history: '<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/>',
+  moveRight: '<path d="M18 8l4 4-4 4"/><path d="M2 12h20"/>',
+  arrowLeft: '<path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>',
+  arrowRight: '<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>',
+  arrowUp: '<path d="m5 12 7-7 7 7"/><path d="M12 19V5"/>',
+  arrowDown: '<path d="M12 5v14"/><path d="m19 12-7 7-7-7"/>',
+  sticky: '<path d="M15.5 3H5a2 2 0 0 0-2 2v14c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2V8.5L15.5 3Z"/><path d="M15 3v6h6"/>',
+  logOut: '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/>',
+  check: '<path d="M20 6 9 17l-5-5"/>',
+  columns: '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/><path d="M15 3v18"/>',
+  rows: '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/>',
+  text: '<path d="M15 12H3"/><path d="M17 18H3"/><path d="M21 6H3"/>',
+  download: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/>',
+  upload: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5"/><path d="M12 3v12"/>',
+};
+function Icon({ n, s = 16, className = '' }) {
+  return html`<svg className=${'ic ' + className} width=${s} height=${s} viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" dangerouslySetInnerHTML=${{ __html: ICONS[n] || '' }}></svg>`;
+}
+function Avatar({ person, size = 24 }) {
+  const name = person?.name || '?';
+  return html`<span className="av" title=${name}
+    style=${{ width: size, height: size, fontSize: Math.max(9, Math.round(size * 0.4)), background: `oklch(0.56 0.12 ${hueOf(person?.id || name)})` }}>${initials(name)}</span>`;
+}
+
+/* ---------- Diálogos e popovers ---------- */
+const dialogStack = [];
+function Dialog({ open, onClose, children, width = 520, label }) {
+  const idRef = useRef(uid());
+  const closeRef = useRef(onClose); closeRef.current = onClose;
+  useEffect(() => {
+    if (!open) return;
+    const id = idRef.current; dialogStack.push(id);
+    const prevFocus = document.activeElement;
+    const k = (e) => { if (e.key === 'Escape' && dialogStack[dialogStack.length - 1] === id) { e.preventDefault(); closeRef.current(); } };
+    window.addEventListener('keydown', k);
+    return () => {
+      window.removeEventListener('keydown', k);
+      const i = dialogStack.indexOf(id); if (i >= 0) dialogStack.splice(i, 1);
+      if (prevFocus && prevFocus.focus && document.contains(prevFocus)) try { prevFocus.focus({ preventScroll: true }); } catch (e) { /* ignora */ }
+    };
+  }, [open]);
+  if (!open) return null;
+  return html`<div className="overlay" onMouseDown=${(e) => { if (e.target === e.currentTarget) onClose(); }}>
+    <div className="dialog" role="dialog" aria-modal="true" aria-label=${label} style=${{ maxWidth: width }}>
+      <button className="btn btn-ghost btn-icon dialog-x" aria-label="Fechar" onClick=${onClose}><${Icon} n="x" /></button>
+      ${children}
+    </div>
+  </div>`;
+}
+function ConfirmDialog({ open, title, body, confirmLabel = 'Confirmar', danger = false, onConfirm, onClose }) {
+  return html`<${Dialog} open=${open} onClose=${onClose} width=${430} label=${title}>
+    <h2>${title}</h2>
+    <p className="sub">${body}</p>
+    <div className="dlg-foot">
+      <button className="btn btn-ghost" onClick=${onClose}>Cancelar</button>
+      <button className=${'btn ' + (danger ? 'btn-destructive' : 'btn-primary')} autoFocus=${true}
+        onClick=${() => { onClose(); onConfirm(); }}>${confirmLabel}</button>
+    </div>
+  <//>`;
+}
+function Popover({ trigger, children, align = 'start', width = 240 }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+  useEffect(() => {
+    if (!open) return;
+    const h = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    const k = (e) => { if (e.key === 'Escape') { e.stopPropagation(); setOpen(false); } };
+    document.addEventListener('pointerdown', h); document.addEventListener('keydown', k, true);
+    return () => { document.removeEventListener('pointerdown', h); document.removeEventListener('keydown', k, true); };
+  }, [open]);
+  const close = () => setOpen(false);
+  return html`<div className="pop-wrap" ref=${ref}>
+    ${trigger({ open, toggle: () => setOpen((o) => !o) })}
+    ${open && html`<div className=${'pop pop-' + align} style=${{ width }}>${typeof children === 'function' ? children({ close }) : children}</div>`}
+  </div>`;
+}
+function ToastHost() {
+  useSyncExternalStore((f) => { ToastStore.subs.add(f); return () => ToastStore.subs.delete(f); }, () => ToastStore.v);
+  return html`<div className="toasts" role="status" aria-live="polite">
+    ${ToastStore.list.map((t) => html`<div key=${t.id} className=${'toast toast-' + t.kind}><span className="dot"></span>${t.msg}</div>`)}
+  </div>`;
+}
+/** Alça do canto inferior direito. Envia o deslocamento total desde o início do arraste. */
+function ResizeHandle({ label, onDrag }) {
+  const st = useRef(null);
+  return html`<div role="separator" aria-label=${label} title=${label} className="resize"
+    onPointerDown=${(e) => { e.stopPropagation(); e.preventDefault(); st.current = { x: e.clientX, y: e.clientY }; e.currentTarget.setPointerCapture(e.pointerId); onDrag(0, 0, 'start'); }}
+    onPointerMove=${(e) => { if (!st.current) return; onDrag(e.clientX - st.current.x, e.clientY - st.current.y, 'move'); }}
+    onPointerUp=${(e) => { if (!st.current) return; const dx = e.clientX - st.current.x, dy = e.clientY - st.current.y; st.current = null; onDrag(dx, dy, 'end'); }}
+    onPointerCancel=${() => { if (!st.current) return; st.current = null; onDrag(0, 0, 'cancel'); }}></div>`;
+}
+</script>
+<script>
+/* ---------- Arrastar e soltar (cartões e listas) ---------- */
+function createDnd({ getLatest, setDv, canvasRef }) {
+  let d = null; let raf = 0; let lastX = 0; let lastY = 0; let lastKey = '';
+  function down(e, type, id) {
+    if (d) return;
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    if (type === 'card' && e.target.closest('button,input,textarea,select,a,[data-nodrag]')) return;
+    const el = e.currentTarget.closest(type === 'card' ? '[data-card-id]' : '[data-list-id]');
+    if (!el) return;
+    d = { type, id, el, sx: e.clientX, sy: e.clientY, pid: e.pointerId, touch: e.pointerType !== 'mouse', started: false, timer: 0, ghost: null, target: null };
+    lastX = e.clientX; lastY = e.clientY;
+    if (d.touch && type === 'card') { const dd = d; d.timer = setTimeout(() => { if (d === dd && !dd.started) start(); }, 300); }
+    if (type === 'list') e.preventDefault();
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+    window.addEventListener('pointercancel', cancel);
+    window.addEventListener('touchmove', tmove, { passive: false });
+  }
+  function tmove(e) { if (d && d.started) e.preventDefault(); }
+  function move(e) {
+    if (!d || e.pointerId !== d.pid) return;
+    lastX = e.clientX; lastY = e.clientY;
+    if (!d.started) {
+      const dist = Math.hypot(lastX - d.sx, lastY - d.sy);
+      if (d.touch && d.type === 'card') { if (dist > 8) end(); return; }
+      if (dist < 6) return;
+      start();
+    }
+    place();
+  }
+  function start() {
+    const r = d.el.getBoundingClientRect();
+    d.ox = d.sx - r.left; d.oy = d.sy - r.top;
+    const g = d.el.cloneNode(true);
+    g.classList.add('drag-ghost');
+    [g, ...g.querySelectorAll('[data-card-id],[data-list-id],[data-list-drop]')].forEach((n) => {
+      n.removeAttribute('data-card-id'); n.removeAttribute('data-list-id'); n.removeAttribute('data-list-drop');
+    });
+    g.style.width = r.width + 'px'; g.style.height = Math.min(r.height, window.innerHeight * 0.8) + 'px'; g.style.overflow = 'hidden';
+    document.body.appendChild(g);
+    d.ghost = g; d.started = true;
+    document.body.classList.add('is-dragging');
+    if (d.touch && navigator.vibrate) { try { navigator.vibrate(8); } catch (e) { /* ignora */ } }
+    setDv({ type: d.type, id: d.id, w: r.width, h: r.height, target: null });
+    place();
+    raf = requestAnimationFrame(tick);
+  }
+  function place() {
+    if (!d || !d.ghost) return;
+    d.ghost.style.transform = `translate(${lastX - d.ox}px, ${lastY - d.oy}px) rotate(2deg)`;
+    computeTarget();
+  }
+  function computeTarget() {
+    const canvas = canvasRef.current; if (!canvas || !d) return;
+    if (d.type === 'card') {
+      const hit = document.elementFromPoint(lastX, lastY);
+      const listEl = hit && hit.closest('[data-list-drop]');
+      if (!listEl || !canvas.contains(listEl)) return;
+      const listId = listEl.getAttribute('data-list-drop');
+      const els = [...listEl.querySelectorAll('[data-card-id]')].filter((n) => n.getAttribute('data-card-id') !== d.id);
+      let index = els.length;
+      for (let i = 0; i < els.length; i++) { const r = els[i].getBoundingClientRect(); if (lastY < r.top + r.height / 2) { index = i; break; } }
+      setTarget({ listId, index });
+    } else {
+      const hitL = document.elementFromPoint(lastX, lastY);
+      let rowEl = hitL && hitL.closest('[data-row-drop]');
+      if (!rowEl || !canvas.contains(rowEl)) {
+        let best = null; let bd = Infinity;
+        for (const el of canvas.querySelectorAll('[data-row-drop]')) {
+          const r = el.getBoundingClientRect();
+          const dist = lastY < r.top ? r.top - lastY : lastY > r.bottom ? lastY - r.bottom : 0;
+          if (dist < bd) { bd = dist; best = el; }
+        }
+        rowEl = best;
+      }
+      if (!rowEl) return;
+      const rowId = rowEl.getAttribute('data-row-drop') || null;
+      const els = [...rowEl.querySelectorAll(':scope > [data-list-id]')].filter((n) => n.getAttribute('data-list-id') !== d.id);
+      const rects = els.map((n) => n.getBoundingClientRect());
+      const layout = getLatest().layout;
+      let index = els.length;
+      if (layout === 'column') {
+        for (let i = 0; i < rects.length; i++) if (lastY < rects[i].top + rects[i].height / 2) { index = i; break; }
+      } else if (layout === 'grid') {
+        // Linha da grade em que está o ponteiro: insere antes da lista à direita dele.
+        let rowTop = -Infinity;
+        for (const r of rects) if (r.top <= lastY && r.top > rowTop) rowTop = r.top;
+        for (let i = 0; i < rects.length; i++) {
+          const r = rects[i];
+          if (r.top > rowTop + 2 && r.top > lastY) { index = i; break; }
+          if (Math.abs(r.top - rowTop) <= 2 && lastX < r.left + r.width / 2) { index = i; break; }
+        }
+      } else {
+        for (let i = 0; i < rects.length; i++) if (lastX < rects[i].left + rects[i].width / 2) { index = i; break; }
+      }
+      setTarget({ rowId, index });
+    }
+  }
+  function setTarget(t) {
+    const k = JSON.stringify(t); if (k === lastKey) return;
+    lastKey = k; d.target = t; setDv((v) => (v ? { ...v, target: t } : v));
+  }
+  function tick() {
+    if (!d || !d.started) return;
+    const c = canvasRef.current;
+    if (c) {
+      const r = c.getBoundingClientRect();
+      const hit0 = document.elementFromPoint(lastX, lastY);
+      const rl = hit0 && hit0.closest('.row-lists');
+      const hz = rl && rl.scrollWidth > rl.clientWidth + 1 ? rl : c;
+      const hr = hz.getBoundingClientRect();
+      let dx = 0;
+      if (lastX < hr.left + 60) dx = -14; else if (lastX > hr.right - 60) dx = 14;
+      if (dx) { hz.scrollLeft += dx; computeTarget(); }
+      if (c.scrollHeight > c.clientHeight + 1) {
+        let dy = 0;
+        if (lastY < r.top + 50) dy = -14; else if (lastY > r.bottom - 50) dy = 14;
+        if (dy) { c.scrollTop += dy; computeTarget(); }
+      }
+      if (d.type === 'card') {
+        const hit = document.elementFromPoint(lastX, lastY);
+        const sc = hit && hit.closest('.list-cards');
+        if (sc) {
+          const rr = sc.getBoundingClientRect(); let dy = 0;
+          if (lastY < rr.top + 28) dy = -9; else if (lastY > rr.bottom - 28) dy = 9;
+          if (dy) { sc.scrollTop += dy; computeTarget(); }
+        }
+      }
+    }
+    raf = requestAnimationFrame(tick);
+  }
+  function up(e) {
+    if (!d || e.pointerId !== d.pid) return;
+    const dd = d; const was = d.started; const t = d.target;
+    end();
+    if (was) { suppressClick(); if (t) commit(dd, t); }
+  }
+  function cancel(e) { if (!d || e.pointerId !== d.pid) return; end(); }
+  function end() {
+    if (!d) return;
+    clearTimeout(d.timer); cancelAnimationFrame(raf);
+    if (d.ghost) d.ghost.remove();
+    window.removeEventListener('pointermove', move);
+    window.removeEventListener('pointerup', up);
+    window.removeEventListener('pointercancel', cancel);
+    window.removeEventListener('touchmove', tmove);
+    document.body.classList.remove('is-dragging');
+    const was = d.started; d = null; lastKey = '';
+    if (was) setDv(null);
+  }
+  function suppressClick() {
+    const h = (e) => { e.stopPropagation(); e.preventDefault(); };
+    window.addEventListener('click', h, true);
+    setTimeout(() => window.removeEventListener('click', h, true), 0);
+  }
+  function commit(dd, t) {
+    const L = getLatest();
+    if (dd.type === 'card') {
+      const card = Data.cards[dd.id]; if (!card) return;
+      const sib = (L.byList.get(t.listId) || []).filter((c) => c.id !== dd.id);
+      if (card.listId === t.listId) {
+        const curIndex = sib.filter((c) => c.position < card.position).length;
+        if (curIndex === t.index) return;
+      }
+      const pos = positionBetween(sib[t.index - 1]?.position, sib[t.index]?.position);
+      const p = { listId: t.listId, position: pos };
+      if (card.listId !== t.listId) p.activities = logged(card, `moveu o cartão para “${Data.lists[t.listId]?.title || ''}”`);
+      patch('cards', dd.id, p);
+    } else {
+      const key = t.rowId || '';
+      const group = L.groups.get(key) || [];
+      const ordered = group.filter((l) => l.id !== dd.id);
+      const cur = group.findIndex((l) => l.id === dd.id);
+      if (cur >= 0 && cur === t.index) return;
+      const pos = positionBetween(ordered[t.index - 1]?.position, ordered[t.index]?.position);
+      const p = { position: pos };
+      if (L.hasRows) p.rowId = t.rowId;
+      patch('lists', dd.id, p);
+      if (L.hasRows && cur < 0) {
+        const row = (L.rows || []).find((r) => r.id === t.rowId);
+        if (row) toast(`Lista movida para a linha “${row.name}”`, 'success');
+      }
+    }
+  }
+  return { down, end };
+}
+
+/* ---------- Tela do quadro ---------- */
+function BoardPage({ id, cardId, go }) {
+  useData();
+  const board = Data.boards[id];
+  const visible = !!board && canSeeBoard(board);
+  const [editingTitle, setEditingTitle] = useState(false);
+  const [titleDraft, setTitleDraft] = useState('');
+  const [term, setTerm] = useState('');
+  const [labelFilter, setLabelFilter] = useState([]);
+  const [memberFilter, setMemberFilter] = useState([]);
+  const [dueFilter, setDueFilter] = useState('all');
+  const [unflagOpen, setUnflagOpen] = useState(false);
+  const [rowDlg, setRowDlg] = useState(false);
+  const [, setTick] = useState(0);
+  useEffect(() => { const t = setInterval(() => setTick((x) => x + 1), 60000); return () => clearInterval(t); }, []);
+  useEffect(() => {
+    const b = Data.boards[id]; if (!b) return;
+    // Tarefas com repetição: marcadas só enquanto a execução atual estiver feita (desmarcam sozinhas na próxima data).
+    for (const c of cardsOfBoard(id)) {
+      if (!c.schedule || !c.schedule.type) continue;
+      const want = schedStatus(c).k === 'done';
+      if (!!c.isCompleted !== want) patch('cards', c.id, { isCompleted: want });
+    }
+    // Listas: registra a conclusão (todas as tarefas feitas) e, nas listas com repetição,
+    // desmarca as tarefas no dia seguinte para o próximo ciclo.
+    const today = todayStr();
+    for (const l of listsOf(id)) {
+      const custom = !!(l.schedule && l.schedule.type);
+      if (!custom && !b.dayTracking) continue;
+      const cs = cardsOfList(l.id); if (!cs.length) continue;
+      const allDone = cs.every(countsAsDone);
+      if (!custom) { if (allDone && (l.lastDoneDate || '') < today) patch('lists', l.id, { lastDoneDate: today }); continue; }
+      const st = listStatus(l, b.dayTracking);
+      if ((st.k === 'due' || st.k === 'late') && allDone) { patch('lists', l.id, { doneFor: st.last, lastDoneDate: today }); continue; }
+      if (l.doneFor && l.lastDoneDate && today > l.lastDoneDate) {
+        for (const c of cs) {
+          if (c.isTask && !(c.schedule && c.schedule.type) && c.isCompleted && (c.lastDoneDate || '') <= l.lastDoneDate) patch('cards', c.id, { isCompleted: false });
+        }
+      }
+    }
+  });
+  const [layout, setLayoutState] = useState(() => { const v = LS.get('list-layout:' + id, 'row'); return ['row', 'grid', 'column'].includes(v) ? v : 'row'; });
+  const setLayout = (v) => { setLayoutState(v); LS.set('list-layout:' + id, v); };
+
+  useEffect(() => { if (!visible) go({ name: 'home' }); }, [visible]);
+  useEffect(() => { if (board) document.title = `${board.title} · Flowtify`; return () => { document.title = 'Flowtify'; }; }, [board?.title]);
+  if (!visible) return null;
+
+  const ws = Data.workspaces[board.workspaceId];
+  const members = membersOfWs(ws);
+  const labels = board.labels || [];
+  const lists = orderedLists(board);
+  const rows = boardRows(board);
+  const allCards = cardsOfBoard(id).filter((c) => Data.lists[c.listId]);
+  const completed = allCards.filter((c) => c.isCompleted);
+  const lateL = lateLists(lists, !!board.dayTracking);
+  const lateTasks = allCards.filter((c) => c.schedule && c.schedule.type).map((c) => ({ c, s: schedStatus(c) })).filter((x) => x.s.k === 'late');
+  const t = term.trim().toLowerCase();
+  const filtered = allCards.filter((c) => {
+    if (t && !c.title.toLowerCase().includes(t)) return false;
+    if (labelFilter.length && !labelFilter.some((l) => (c.labelIds || []).includes(l))) return false;
+    if (memberFilter.length && !memberFilter.some((m) => (c.memberIds || []).includes(m))) return false;
+    if (dueFilter !== 'all') {
+      const st = dueState(c.dueDate, c.isCompleted);
+      const sk = c.schedule && c.schedule.type ? schedStatus(c).k : null;
+      if (dueFilter === 'none' && (st !== 'none' || sk)) return false;
+      if (dueFilter === 'overdue' && st !== 'overdue' && sk !== 'late') return false;
+      if (dueFilter === 'soon' && st !== 'soon' && sk !== 'due') return false;
+    }
+    return true;
+  });
+  const activeFilters = labelFilter.length + memberFilter.length + (dueFilter !== 'all' ? 1 : 0);
+  const toggleIn = (arr, set, v) => set(arr.includes(v) ? arr.filter((x) => x !== v) : [...arr, v]);
+
+  function saveTitle() {
+    setEditingTitle(false);
+    const v = titleDraft.trim();
+    if (v && v !== board.title) patch('boards', id, { title: v });
+  }
+  function unflag() {
+    for (const c of completed) uncheckCard(c);
+    toast(completed.length === 1 ? '1 tarefa voltou a ficar pendente.' : `${completed.length} tarefas voltaram a ficar pendentes.`, 'success');
+  }
+
+  return html`<div className="board" style=${bgStyle(board.background)}>
+    <div className="board-bar">
+      <div>
+        ${editingTitle
+          ? html`<input className="inp board-title-inp" autoFocus=${true} value=${titleDraft} aria-label="Nome do quadro"
+              onChange=${(e) => setTitleDraft(e.target.value)} onBlur=${saveTitle}
+              onKeyDown=${(e) => { if (e.key === 'Enter') e.currentTarget.blur(); if (e.key === 'Escape') setEditingTitle(false); }} />`
+          : html`<button className="board-title" title="Editar nome do quadro" onClick=${() => { setTitleDraft(board.title); setEditingTitle(true); }}>
+              ${board.title}<${Icon} n="pencil" s=${14} /></button>`}
+        <div className="board-ws" style=${{ paddingLeft: 8 }}>${ws?.name}</div>
+      </div>
+      <div className="board-tools">
+        <div className="layout-seg on-bg" role="radiogroup" aria-label="Organização das listas">
+          ${[['row', 'columns', 'Lado a lado'], ['grid', 'grid', 'Em grade'], ['column', 'rows', 'Uma embaixo da outra']].map(([k, ic, l]) => html`
+            <button key=${k} role="radio" aria-checked=${layout === k} aria-label=${'Listas: ' + l} title=${'Listas: ' + l}
+              className=${layout === k ? 'on' : ''} onClick=${() => setLayout(k)}><${Icon} n=${ic} /></button>`)}
+        </div>
+        <button className=${'btn ' + (board.dayTracking ? 'is-on' : 'btn-secondary')} aria-pressed=${!!board.dayTracking}
+          title=${board.dayTracking ? 'Desligar o marcador de dias deste quadro' : 'Mostrar se cada lista está em dia ou atrasada'}
+          onClick=${() => { patch('boards', id, { dayTracking: !board.dayTracking }); toast(board.dayTracking ? 'Marcador de dias desligado' : 'Marcador de dias ligado: listas com tudo concluído ficam em dia', 'success'); }}>
+          <${Icon} n="calendar" /> Marcador de dias</button>
+        <button className="btn btn-secondary" title="Dividir o quadro em linhas com nome" onClick=${() => setRowDlg(true)}>
+          <${Icon} n="rows" /> Nova linha</button>
+        <input className="inp filter-inp on-bg" value=${term} placeholder="Filtrar cartões…" aria-label="Filtrar cartões por palavra"
+          onChange=${(e) => setTerm(e.target.value)} />
+        <${Popover} align="end" width=${268} trigger=${({ toggle }) => html`<button className="btn btn-secondary" onClick=${toggle}>
+            <${Icon} n="filter" /> Filtros ${activeFilters > 0 && html`<span className="badge">${activeFilters}</span>`}</button>`}>
+          <div className="f-sec">
+            <p className="f-h">Prazo</p>
+            <div className="f-due">
+              ${[['all', 'Todos'], ['overdue', 'Atrasados'], ['soon', 'Hoje'], ['none', 'Sem data']].map(([k, l]) => html`
+                <button key=${k} className=${'btn btn-xs ' + (dueFilter === k ? 'btn-primary' : 'btn-outline')} onClick=${() => setDueFilter(k)}>${l}</button>`)}
+            </div>
+          </div>
+          <div className="f-sec">
+            <p className="f-h">Etiquetas</p>
+            ${labels.length === 0 && html`<p className="muted small">Este quadro ainda não tem etiquetas.</p>`}
+            ${labels.map((l) => html`<button key=${l.id} className=${'menu-item' + (labelFilter.includes(l.id) ? ' on' : '')}
+                onClick=${() => toggleIn(labelFilter, setLabelFilter, l.id)}>
+                <span className="swatch" style=${{ ...lblStyle(l.color), width: 24 }}></span><span className="trunc">${l.name || LABEL_NAMES[l.color]}</span>
+                ${labelFilter.includes(l.id) && html`<span className="trail"><${Icon} n="check" s=${14} /></span>`}</button>`)}
+          </div>
+          <div className="f-sec">
+            <p className="f-h">Pessoas</p>
+            ${members.map((m) => html`<button key=${m.id} className=${'menu-item' + (memberFilter.includes(m.id) ? ' on' : '')}
+                onClick=${() => toggleIn(memberFilter, setMemberFilter, m.id)}>
+                <${Avatar} person=${m} size=${20} /><span className="trunc">${m.name}${m.id === Me.id ? ' (você)' : ''}</span>
+                ${memberFilter.includes(m.id) && html`<span className="trail"><${Icon} n="check" s=${14} /></span>`}</button>`)}
+          </div>
+          ${(activeFilters > 0 || term) && html`<button className="btn btn-ghost btn-sm" style=${{ width: '100%' }}
+              onClick=${() => { setLabelFilter([]); setMemberFilter([]); setDueFilter('all'); setTerm(''); }}><${Icon} n="x" s=${14} /> Limpar filtros</button>`}
+        <//>
+        <button className="btn btn-secondary" title="Desmarcar todas as tarefas concluídas" disabled=${completed.length === 0}
+          onClick=${() => setUnflagOpen(true)}><${Icon} n="listRestart" /> Desmarcar concluídas</button>
+      </div>
+    </div>
+
+    ${(board.dayTracking || lateTasks.length > 0 || lateL.length > 0) && html`<${DayAlert} lists=${lists} tracking=${!!board.dayTracking} tasks=${lateTasks} />`}
+    <div className="board-area">
+      <${Canvas} key=${id} layout=${layout} board=${board} lists=${lists} cards=${filtered} members=${members} labels=${labels}
+        openCard=${(cid) => go({ name: 'board', id, card: cid })} />
+      <${StickyNotes} boardId=${id} />
+    </div>
+
+    ${cardId && Data.cards[cardId] && Data.cards[cardId].boardId === id && html`<${CardModal} key=${cardId} cardId=${cardId} board=${board}
+        lists=${lists} members=${members} labels=${labels} onClose=${() => go({ name: 'board', id })} />`}
+
+    <${NameDialog} open=${rowDlg} onClose=${() => setRowDlg(false)} title="Nova linha" placeholder="Ex.: Bancos" cta="Criar linha"
+      sub=${rows.length ? 'Depois, arraste listas para ela pela alça ou crie listas dentro dela.' : 'As listas atuais entram nesta linha. Depois, crie outras linhas e arraste as listas entre elas.'}
+      onSave=${(n) => { addRow(board, n); toast(`Linha “${n}” criada`, 'success'); setTimeout(() => { const c = document.querySelector('.canvas'); if (c) c.scrollTo({ top: c.scrollHeight, behavior: 'smooth' }); }, 60); }} />
+    <${ConfirmDialog} open=${unflagOpen} onClose=${() => setUnflagOpen(false)} title="Desmarcar tarefas concluídas?"
+      body=${(completed.length === 1 ? '1 tarefa concluída será desmarcada e voltará a aparecer como pendente.'
+        : `${completed.length} tarefas concluídas serão desmarcadas e voltarão a aparecer como pendentes.`)
+        + (completed.some((c) => c.schedule && c.schedule.type) ? ' Nas tarefas com repetição, a conclusão da data atual também é desfeita.' : '')
+        + ' Nenhum cartão será excluído.'}
+      confirmLabel="Desmarcar" onConfirm=${unflag} />
+  </div>`;
+}
+
+function Canvas({ layout = 'row', board, lists, cards, members, labels, openCard }) {
+  const canvasRef = useRef(null);
+  const [widths, setWidths] = useState(() => LS.get('list-widths:' + board.id, {}) || {});
+  const [collapsed, setCollapsed] = useState(() => LS.get('rows-collapsed:' + board.id, []) || []);
+  const [dv, setDv] = useState(null);
+  const [delRow, setDelRow] = useState(null);
+  const base = useRef({});
+  const rows = boardRows(board);
+  const hasRows = rows.length > 0;
+  const byList = useMemo(() => {
+    const m = new Map(lists.map((l) => [l.id, []]));
+    for (const c of cards) { const a = m.get(c.listId); if (a) a.push(c); }
+    for (const a of m.values()) a.sort(byPos);
+    return m;
+  }, [lists, cards]);
+  const groups = new Map();
+  if (hasRows) { for (const r of rows) groups.set(r.id, []); for (const l of lists) groups.get(effRowId(l, rows))?.push(l); }
+  else groups.set('', lists);
+  const latest = useRef(null); latest.current = { byList, lists, layout, groups, hasRows, rows };
+  const dnd = useRef(null);
+  if (!dnd.current) dnd.current = createDnd({ getLatest: () => latest.current, setDv, canvasRef });
+  useEffect(() => () => dnd.current.end(), []);
+  const lastPosition = Math.max(0, ...lists.map((l) => l.position || 0));
+
+  function onResize(listId, dx, phase) {
+    if (phase === 'start') { base.current[listId] = widths[listId] ?? DEFAULT_LIST_W; return; }
+    if (phase === 'cancel') return;
+    const w = Math.round(Math.min(640, Math.max(200, (base.current[listId] ?? DEFAULT_LIST_W) + dx)));
+    setWidths((prev) => {
+      const n = { ...prev, [listId]: w };
+      if (phase === 'end') LS.set('list-widths:' + board.id, n);
+      return n;
+    });
+  }
+  useEffect(() => {
+    const h = (e) => {
+      const det = typeof e.detail === 'string' ? { listId: e.detail } : (e.detail || {});
+      const lid = det.listId; const l = Data.lists[lid]; if (!l) return;
+      const rid = hasRows ? effRowId(l, rows) : null;
+      if (rid && collapsed.includes(rid)) setCollapsed((prev) => { const n = prev.filter((x) => x !== rid); LS.set('rows-collapsed:' + board.id, n); return n; });
+      setTimeout(() => {
+        const c = canvasRef.current; if (!c) return;
+        const el = (det.cardId && c.querySelector(`[data-card-id="${det.cardId}"]`)) || c.querySelector(`[data-list-id="${lid}"]`);
+        if (!el) return;
+        el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash');
+        setTimeout(() => el.classList.remove('flash'), 1500);
+      }, 80);
+    };
+    window.addEventListener('flowtify:focus-list', h);
+    return () => window.removeEventListener('flowtify:focus-list', h);
+  });
+  function toggleCollapse(rowId) {
+    setCollapsed((prev) => { const n = prev.includes(rowId) ? prev.filter((x) => x !== rowId) : [...prev, rowId]; LS.set('rows-collapsed:' + board.id, n); return n; });
+  }
+
+  const draggingList = dv && dv.type === 'list' ? dv.id : null;
+  function renderLists(key, groupLists) {
+    const shown = groupLists.filter((l) => l.id !== draggingList);
+    const here = draggingList && dv.target && (dv.target.rowId || '') === key;
+    const listPh = here && html`<div key="__list_ph" className="list-ph" style=${{ width: dv.w, height: Math.min(dv.h, 360) }}></div>`;
+    const cols = [];
+    shown.forEach((l, i) => {
+      if (here && dv.target.index === i) cols.push(listPh);
+      cols.push(html`<${ListColumn} key=${l.id} list=${l} cards=${byList.get(l.id) || []} allLists=${lists} members=${members}
+        labels=${labels} width=${widths[l.id] ?? DEFAULT_LIST_W} onResize=${(dx, phase) => onResize(l.id, dx, phase)}
+        dnd=${dnd.current} dv=${dv} openCard=${openCard} tracking=${!!board.dayTracking} />`);
+    });
+    if (here && dv.target.index === shown.length) cols.push(listPh);
+    cols.push(html`<${AddList} key="__add" boardId=${board.id} rowId=${key || null} lastPosition=${lastPosition} />`);
+    return cols;
+  }
+
+  if (!hasRows) {
+    return html`<div className=${'canvas lay-' + layout} ref=${canvasRef} data-row-drop="">${renderLists('', lists)}</div>`;
+  }
+  return html`<div className="canvas has-rows" ref=${canvasRef}>
+    ${rows.map((r, i) => {
+      const isCol = collapsed.includes(r.id);
+      const n = (groups.get(r.id) || []).length;
+      return html`<section key=${r.id} className=${'row-sec' + (isCol ? ' collapsed' : '')} aria-label=${'Linha ' + r.name}>
+        <${RowHeader} row=${r} count=${n} late=${lateLists(groups.get(r.id) || [], !!board.dayTracking).length} collapsed=${isCol} first=${i === 0} last=${i === rows.length - 1}
+          onToggle=${() => toggleCollapse(r.id)} onRename=${(name) => renameRow(board, r.id, name)}
+          onMove=${(d) => moveRow(board, r.id, d)} onDelete=${() => (n ? setDelRow(r) : deleteRow(board, r.id))} />
+        ${!isCol && html`<div className=${'row-lists lay-' + layout} data-row-drop=${r.id}>${renderLists(r.id, groups.get(r.id) || [])}</div>`}
+      </section>`;
+    })}
+    <${AddRowButton} board=${board} />
+    ${delRow && html`<${ConfirmDialog} open=${true} onClose=${() => setDelRow(null)} danger=${true} confirmLabel="Excluir linha"
+      title=${`Excluir a linha “${delRow.name}”?`}
+      body=${(() => { const i = rows.findIndex((x) => x.id === delRow.id); const t = rows[i - 1] || rows[i + 1];
+        const n = (groups.get(delRow.id) || []).length;
+        return t ? `${plural(n, 'lista vai', 'listas vão')} para a linha “${t.name}”. Nenhum cartão será excluído.`
+          : `${plural(n, 'lista volta', 'listas voltam')} a ficar sem linha. Nenhum cartão será excluído.`; })()}
+      onConfirm=${() => { const t = deleteRow(board, delRow.id); toast(t ? `Linha excluída; listas movidas para “${t.name}”` : 'Linha excluída', 'success'); }} />`}
+  </div>`;
+}
+
+function RowHeader({ row, count, late = 0, collapsed, first, last, onToggle, onRename, onMove, onDelete }) {
+  const [name, setName] = useState(row.name);
+  useEffect(() => setName(row.name), [row.name]);
+  const commit = () => { const v = name.trim(); if (!v) { setName(row.name); return; } if (v !== row.name) onRename(v); };
+  return html`<div className="row-head">
+    <button className="btn btn-icon btn-xs row-btn" aria-expanded=${!collapsed} aria-label=${collapsed ? 'Mostrar linha' : 'Recolher linha'}
+      title=${collapsed ? 'Mostrar linha' : 'Recolher linha'} onClick=${onToggle}><${Icon} n=${collapsed ? 'chevronRight' : 'chevronDown'} s=${15} /></button>
+    <input className="row-name" value=${name} aria-label="Nome da linha" onChange=${(e) => setName(e.target.value)} onBlur=${commit}
+      onKeyDown=${(e) => { if (e.key === 'Enter') e.currentTarget.blur(); if (e.key === 'Escape') { setName(row.name); setTimeout(() => e.target.blur()); } }} />
+    <span className="row-meta">${plural(count, 'lista', 'listas')}${late > 0 && html`<span className="row-late">${late} em atraso</span>`}</span>
+    <button className="btn btn-icon btn-xs row-btn" aria-label="Subir linha" title="Subir linha" disabled=${first} onClick=${() => onMove(-1)}><${Icon} n="arrowUp" s=${14} /></button>
+    <button className="btn btn-icon btn-xs row-btn" aria-label="Descer linha" title="Descer linha" disabled=${last} onClick=${() => onMove(1)}><${Icon} n="arrowDown" s=${14} /></button>
+    <button className="btn btn-icon btn-xs row-btn" aria-label="Excluir linha" title="Excluir linha" onClick=${onDelete}><${Icon} n="trash" s=${14} /></button>
+  </div>`;
+}
+
+function AddRowButton({ board }) {
+  const [open, setOpen] = useState(false);
+  return html`<${Fragment}>
+    <button className="add-row-btn" onClick=${() => setOpen(true)}><${Icon} n="plus" /> Adicionar linha</button>
+    <${NameDialog} open=${open} onClose=${() => setOpen(false)} title="Nova linha" placeholder="Ex.: Financeiras" cta="Criar linha"
+      sub="Depois, arraste listas para ela pela alça ou crie listas dentro dela."
+      onSave=${(n) => { addRow(board, n); toast(`Linha “${n}” criada`, 'success'); setTimeout(() => { const c = document.querySelector('.canvas'); if (c) c.scrollTo({ top: c.scrollHeight, behavior: 'smooth' }); }, 60); }} />
+  <//>`;
+}
+
+function DayAlert({ lists, tracking, tasks = [] }) {
+  const tracked = tracking ? lists.filter((l) => cardsOfList(l.id).length > 0) : [];
+  const late = lateLists(lists, tracking).sort((a, b) => a.s.since.localeCompare(b.s.since));
+  const lt = [...tasks].sort((a, b) => a.s.since.localeCompare(b.s.since));
+  const focus = (detail) => window.dispatchEvent(new CustomEvent('flowtify:focus-list', { detail }));
+  if (!late.length && !lt.length) {
+    if (!tracked.length) return null;
+    const pending = tracked.filter((l) => { const s = listStatus(l, true); return s && s.k === 'due'; }).length;
+    return html`<div className="day-alert ok" role="status"><${Icon} n="check" s=${15} className="ic-ok" />
+      <strong>Nenhuma lista em atraso.</strong>
+      <span className="muted">${pending ? `${plural(pending, 'lista pendente', 'listas pendentes')} hoje.` : 'Todas concluídas hoje.'}</span></div>`;
+  }
+  return html`<div className="day-alert" role="alert">
+    <${Icon} n="calendar" s=${15} className="ic-late" />
+    ${late.length > 0 && html`<${Fragment}>
+      <strong>${late.length === 1 ? '1 lista em atraso:' : `${late.length} listas em atraso:`}</strong>
+      ${late.map(({ l, s }) => html`<button key=${l.id} className="late-chip" title=${'Ir para ' + l.title + (s.custom ? `; ${schedLabel(s.sch)}` : '')}
+          onClick=${() => focus(l.id)}>${l.title} (${s.custom ? `desde ${fmtWd(s.since)}` : daysTxt(s.missed)})</button>`)}
+      ${lt.length > 0 && html`<span style=${{ width: 8 }}></span>`}
+    <//>`}
+    ${lt.length > 0 && html`<${Fragment}>
+      <strong>${lt.length === 1 ? '1 tarefa atrasada:' : `${lt.length} tarefas atrasadas:`}</strong>
+      ${lt.map(({ c, s }) => html`<button key=${c.id} className="late-chip" title=${`${schedLabel(c.schedule)}; atrasada desde ${fmtWd(s.since)}`}
+          onClick=${() => focus({ listId: c.listId, cardId: c.id })}>${c.title} em ${Data.lists[c.listId]?.title || ''} (desde ${fmtWd(s.since)})</button>`)}
+    <//>`}
+  </div>`;
+}
+
+function DayMarker({ list, tracking, onOpen }) {
+  const st = listStatus(list, tracking); if (!st) return null;
+  const today = todayStr();
+  let cls; let label; let side; let sideTitle;
+  if (st.custom) {
+    cls = { due: 'today', late: 'late', done: 'ok', upcoming: 'next' }[st.k];
+    label = st.k === 'due' ? 'Vence hoje' : st.k === 'late' ? `Atrasada desde ${fmtWd(st.since)}` : st.k === 'done' ? 'Em dia' : `Próxima: ${fmtWd(st.next)}`;
+    side = schedLabel(st.sch); sideTitle = 'Repetição da lista: ' + side;
+  } else {
+    cls = st.k === 'late' ? 'late' : st.k === 'due' ? 'today' : 'ok';
+    label = st.k === 'late' ? `Atrasada há ${daysTxt(st.missed)}` : st.k === 'due' ? 'Pendente hoje' : 'Em dia';
+    side = !list.lastDoneDate ? 'sem registro' : list.lastDoneDate >= today ? 'concluída hoje'
+      : `última: ${parseDay(list.lastDoneDate).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })}`;
+    sideTitle = list.lastDoneDate ? 'Última conclusão em ' + fmtDayLong(list.lastDoneDate) : 'Ainda sem conclusão registrada';
+  }
+  return html`<div className="day-line">
+    <button className=${'day-pill day-' + cls} title="Prazo e repetição da lista" onClick=${onOpen}>
+      ${cls === 'ok' && html`<${Icon} n="check" s=${12} />`}${label}</button>
+    <span className="day-when" title=${sideTitle}>${side}</span>
+  </div>`;
+}
+
+function ListScheduleDialog({ list, tracking, open, onClose }) {
+  const [date, setDate] = useState(list.lastDoneDate || '');
+  useEffect(() => { if (open) setDate(list.lastDoneDate || ''); }, [open]);
+  if (!open) return null;
+  const custom = !!(list.schedule && list.schedule.type);
+  const st = listStatus(list, tracking);
+  const today = todayStr();
+  const setSched = (next) => patch('lists', list.id, { schedule: next, doneFor: null });
+  const saveDate = (v) => { patch('lists', list.id, { lastDoneDate: v || null }); onClose(); };
+  const statusTxt = !st || !custom ? '' : st.k === 'due' ? 'Precisa estar concluída hoje.'
+    : st.k === 'late' ? `Atrasada desde ${fmtWd(st.since)}${st.missed > 1 ? ` (${st.missed} execuções perdidas)` : ''}.`
+    : st.k === 'done' ? `Feita hoje. Próxima: ${fmtWd(st.next)}.`
+    : `Próxima execução: ${fmtWd(st.next)}.`;
+  return html`<${Dialog} open=${true} onClose=${onClose} width=${480} label="Prazo da lista">
+    <h2>Prazo da lista: ${list.title}</h2>
+    <p className="sub">${custom
+      ? 'A execução conta como feita quando todas as tarefas da lista estão concluídas, no dia ou antes. No dia seguinte, elas se desmarcam sozinhas para o próximo ciclo.'
+      : tracking ? 'Sem repetição própria, a lista segue o marcador de dias: precisa ficar com tudo concluído todo dia útil.'
+      : 'Escolha em que dias a lista precisa estar concluída. Se a data passar, ela fica atrasada e aparece no aviso do quadro.'}</p>
+    <div className="dlg-body">
+      <${ScheduleFields} sch=${custom ? list.schedule : null} onSet=${setSched}
+        noneLabel=${tracking ? 'Seguir o marcador de dias (todo dia útil)' : 'Não se repete'} />
+      ${custom && st && html`<p className=${'sched-status ' + st.k}>${schedLabel(list.schedule)}. ${statusTxt}</p>`}
+      ${custom && st && (st.k === 'due' || st.k === 'late') && html`<div>
+        <button className="btn btn-secondary btn-sm" onClick=${() => { patch('lists', list.id, { doneFor: st.last, lastDoneDate: today }); onClose(); }}>
+          <${Icon} n="check" s=${14} /> Marcar execução como feita</button></div>`}
+      ${!custom && tracking && html`<${Fragment}>
+        <label className="field">Última conclusão
+          <input type="date" className="inp" value=${date} max=${today} onChange=${(e) => setDate(e.target.value)} /></label>
+        <div className="row" style=${{ flexWrap: 'wrap' }}>
+          <button className="btn btn-secondary btn-sm" onClick=${() => saveDate(today)}>Concluída hoje</button>
+          <button className="btn btn-secondary btn-sm" onClick=${() => saveDate(date)} disabled=${!date || date === (list.lastDoneDate || '')}>Salvar data</button>
+          <button className="btn btn-ghost btn-sm" onClick=${() => saveDate(null)}>Limpar data</button>
+        </div>
+      <//>`}
+    </div>
+    <div className="dlg-foot"><button className="btn btn-primary" onClick=${onClose}>Fechar</button></div>
+  <//>`;
+}
+
+function ListColumn({ list, cards, allLists, members, labels, width, onResize, dnd, dv, openCard, tracking }) {
+  const [schedOpen, setSchedOpen] = useState(false);
+  const listCustom = !!(list.schedule && list.schedule.type);
+  const [title, setTitle] = useState(list.title);
+  const [adding, setAdding] = useState(false);
+  const [confirmDel, setConfirmDel] = useState(false);
+  useEffect(() => setTitle(list.title), [list.title]);
+
+  const draggingCard = dv && dv.type === 'card' ? dv.id : null;
+  const visible = cards.filter((c) => c.id !== draggingCard);
+  const showPh = draggingCard && dv.target && dv.target.listId === list.id;
+  const ph = showPh && html`<div key="__card_ph" className="card-ph" style=${{ height: Math.min(dv.h, 160) }}></div>`;
+  const items = [];
+  visible.forEach((c, i) => {
+    if (showPh && dv.target.index === i) items.push(ph);
+    items.push(html`<${CardTile} key=${c.id} card=${c} labels=${labels} dnd=${dnd} onOpen=${() => openCard(c.id)} />`);
+  });
+  if (showPh && dv.target.index === visible.length) items.push(ph);
+
+  const totalInList = cardsOfList(list.id).length;
+  const doneTasks = cards.filter((c) => c.isTask && c.isCompleted);
+
+  function rename() {
+    const v = title.trim();
+    if (!v) { setTitle(list.title); return; }
+    if (v !== list.title) patch('lists', list.id, { title: v });
+  }
+
+  return html`<section className="list" data-list-id=${list.id} data-list-drop=${list.id} style=${{ width }} aria-label=${'Lista ' + list.title}>
+    <div className="list-head">
+      <button className="grip" aria-label="Mover lista" title="Arraste para mover a lista" onPointerDown=${(e) => dnd.down(e, 'list', list.id)}>
+        <${Icon} n="grip" /></button>
+      <input className="list-title" value=${title} aria-label="Nome da lista" onChange=${(e) => setTitle(e.target.value)} onBlur=${rename}
+        onKeyDown=${(e) => { if (e.key === 'Enter') e.currentTarget.blur(); if (e.key === 'Escape') { setTitle(list.title); setTimeout(() => e.target.blur()); } }} />
+      <span className="list-count">${cards.length}</span>
+      ${doneTasks.length > 0 && html`<button className="btn btn-ghost btn-icon btn-xs" title="Limpar tarefas concluídas" aria-label="Limpar tarefas concluídas"
+          onClick=${() => doneTasks.forEach(uncheckCard)}><${Icon} n="rotate" s=${14} /></button>`}
+      <button className=${'btn btn-icon btn-xs ' + (listCustom ? 'is-on' : 'btn-ghost')} title=${listCustom ? 'Repetição: ' + schedLabel(list.schedule) : 'Prazo e repetição da lista'}
+        aria-label="Prazo e repetição da lista" onClick=${() => setSchedOpen(true)}><${Icon} n="repeat" s=${13} /></button>
+      <button className="btn btn-ghost btn-icon btn-xs" title="Duplicar lista" aria-label="Duplicar lista" onClick=${() => duplicateList(list)}>
+        <${Icon} n="copy" s=${14} /></button>
+      <button className="btn btn-ghost btn-icon btn-xs" title="Excluir lista" aria-label="Excluir lista"
+        onClick=${() => (totalInList ? setConfirmDel(true) : deleteList(list))}><${Icon} n="trash" s=${14} /></button>
+    </div>
+    ${(tracking || listCustom) && totalInList > 0 && html`<${DayMarker} list=${list} tracking=${tracking} onOpen=${() => setSchedOpen(true)} />`}
+    <${ListScheduleDialog} list=${list} tracking=${tracking} open=${schedOpen} onClose=${() => setSchedOpen(false)} />
+    <div className="list-cards">${items}</div>
+    ${adding
+      ? html`<${AddCardForm} list=${list} allLists=${allLists} members=${members} onClose=${() => setAdding(false)} />`
+      : html`<button className="add-card-btn" onClick=${() => setAdding(true)}><${Icon} n="plus" /> Adicionar cartão ou tarefa</button>`}
+    <${ResizeHandle} label="Redimensionar lista" onDrag=${(dx, _dy, phase) => onResize(dx, phase)} />
+    <${ConfirmDialog} open=${confirmDel} onClose=${() => setConfirmDel(false)} danger=${true} confirmLabel="Excluir lista"
+      title=${`Excluir a lista “${list.title}”?`} body=${`${plural(totalInList, 'cartão será excluído', 'cartões serão excluídos')} junto com ela. Isso não pode ser desfeito.`}
+      onConfirm=${() => deleteList(list)} />
+  </section>`;
+}
+
+function CardTile({ card, labels, dnd, onOpen }) {
+  const down = (e) => dnd.down(e, 'card', card.id);
+  if (card.isTask) {
+    const st = card.schedule && card.schedule.type ? schedStatus(card) : null;
+    return html`<div className="ctile ttile" data-card-id=${card.id} onPointerDown=${down}>
+      <input type="checkbox" checked=${!!card.isCompleted} aria-label="Concluir tarefa"
+        onChange=${(e) => checkTask(card, e.target.checked)} />
+      <div className="t-body">
+        <span className=${'ctile-title' + (card.isCompleted ? ' done' : '')} onClick=${onOpen} title="Abrir a tarefa para editar ou definir repetição">${card.title}</span>
+        ${st && html`<span className=${'sched sched-' + st.k}><${Icon} n="repeat" s=${10} />${schedLabel(card.schedule)}, ${schedText(st)}</span>`}
+      </div>
+      <button className="tdel" aria-label="Excluir tarefa" title="Excluir tarefa" onClick=${() => remove('cards', card.id)}><${Icon} n="trash" s=${14} /></button>
+    </div>`;
+  }
+  const cl = labels.filter((l) => (card.labelIds || []).includes(l.id));
+  const cm = (card.memberIds || []).map((pid) => Data.people[pid]).filter(Boolean);
+  const due = dueState(card.dueDate, card.isCompleted);
+  const items = (card.checklists || []).flatMap((c) => c.items || []);
+  const done = items.filter((i) => i.checked).length;
+  const steps = card.pipelineListIds || [];
+  const stepIdx = steps.indexOf(card.listId);
+  const nComments = (card.comments || []).length;
+  const nAtt = (card.attachments || []).length;
+  const hasMeta = due !== 'none' || items.length || nComments || nAtt || cm.length || (steps.length > 1 && stepIdx >= 0) || card.description;
+  return html`<div className="ctile" data-card-id=${card.id} role="button" tabIndex="0" onPointerDown=${down} onClick=${onOpen}
+      onKeyDown=${(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onOpen(); } }}>
+    ${cl.length > 0 && html`<div className="ctile-labels">${cl.map((l) => html`<span key=${l.id} className="lbl-bar" style=${lblStyle(l.color)} title=${l.name}></span>`)}</div>`}
+    <p className=${'ctile-title' + (card.isCompleted ? ' done' : '')}>${card.title}</p>
+    ${hasMeta && html`<div className="ctile-meta">
+      ${due !== 'none' && html`<span className=${'due due-' + due} title=${'Prazo: ' + fmtDayLong(card.dueDate)}><${Icon} n="calendar" s=${11} />${fmtDay(card.dueDate)}</span>`}
+      ${card.description && html`<span className="meta" title="Tem descrição"><${Icon} n="text" s=${11} /></span>`}
+      ${items.length > 0 && html`<span className=${'meta' + (done === items.length ? ' full' : '')} title="Checklist"><${Icon} n="checkSquare" s=${11} />${done}/${items.length}</span>`}
+      ${nComments > 0 && html`<span className="meta" title="Comentários"><${Icon} n="message" s=${11} />${nComments}</span>`}
+      ${nAtt > 0 && html`<span className="meta" title="Anexos"><${Icon} n="clip" s=${11} />${nAtt}</span>`}
+      ${steps.length > 1 && stepIdx >= 0 && html`<span className="meta" title=${`Esteira: etapa ${stepIdx + 1} de ${steps.length}`}><${Icon} n="moveRight" s=${11} />${stepIdx + 1}/${steps.length}</span>`}
+      ${cm.length > 0 && html`<span className="av-stack">${cm.slice(0, 3).map((m) => html`<${Avatar} key=${m.id} person=${m} size=${18} />`)}</span>`}
+    </div>`}
+  </div>`;
+}
+
+function AddCardForm({ list, allLists, members, onClose }) {
+  const [mode, setMode] = useState('card');
+  const [title, setTitle] = useState('');
+  const [pipe, setPipe] = useState([]);
+  const [auto, setAuto] = useState(true);
+  const [owners, setOwners] = useState([]);
+  const ref = useRef(null);
+  function add() {
+    const v = title.trim(); if (!v) return;
+    const isCard = mode === 'card';
+    const steps = isCard && pipe.length ? (pipe.includes(list.id) ? pipe : [list.id, ...pipe]) : [];
+    const firstOwner = isCard ? owners.find((o) => o.listId === list.id)?.personId : null;
+    put('cards', uid(), {
+      ...cardDefaults(), boardId: list.boardId, listId: list.id, title: v, position: lastPos(list.id) + 1000,
+      isTask: !isCard, pipelineListIds: steps, pipelineAuto: auto, pipelineOwners: isCard ? owners : [],
+      memberIds: firstOwner ? [firstOwner] : [], createdAt: now(), createdBy: Me.id,
+      activities: [{ id: uid(), personId: Me.id, action: isCard ? 'criou o cartão' : 'criou a tarefa', at: now() }],
+    });
+    setTitle(''); setPipe([]); setOwners([]);
+    if (ref.current) ref.current.focus();
+  }
+  return html`<div className="add-form">
+    <div className="seg" role="group" aria-label="Tipo">
+      ${['card', 'task'].map((m) => html`<button key=${m} className=${mode === m ? 'on' : ''} aria-pressed=${mode === m} onClick=${() => setMode(m)}>${m === 'card' ? 'Cartão' : 'Tarefa'}</button>`)}
+    </div>
+    <textarea ref=${ref} className="inp inp-sm" rows="2" autoFocus=${true} value=${title}
+      placeholder=${mode === 'card' ? 'Título do cartão' : 'Descrição da tarefa'} aria-label=${mode === 'card' ? 'Título do cartão' : 'Descrição da tarefa'}
+      onChange=${(e) => setTitle(e.target.value)}
+      onKeyDown=${(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); add(); } if (e.key === 'Escape') onClose(); }}></textarea>
+    ${mode === 'card' && allLists.length > 1 && html`<${PipelineEditor} lists=${allLists} value=${pipe} auto=${auto} onChange=${setPipe}
+        onAutoChange=${setAuto} members=${members} owners=${owners} onOwnersChange=${setOwners} />`}
+    ${mode === 'card' && pipe.length > 0 && !pipe.includes(list.id) && html`<p className="hint">“${list.title}” entra como primeira etapa.</p>`}
+    <div className="row">
+      <button className="btn btn-primary btn-sm" onClick=${add}>Adicionar</button>
+      <button className="btn btn-ghost btn-icon btn-sm" aria-label="Cancelar" onClick=${onClose}><${Icon} n="x" /></button>
+    </div>
+  </div>`;
+}
+
+function AddList({ boardId, rowId = null, lastPosition }) {
+  const [open, setOpen] = useState(false);
+  const [title, setTitle] = useState('');
+  function create() {
+    const v = title.trim(); if (!v) return;
+    put('lists', uid(), { boardId, rowId, title: v, position: (lastPosition || 0) + 1000 });
+    setTitle('');
+  }
+  return html`<div className="add-list">
+    ${open
+      ? html`<div className="add-list-form">
+          <input className="inp inp-sm" autoFocus=${true} value=${title} placeholder="Nome da lista" aria-label="Nome da lista"
+            onChange=${(e) => setTitle(e.target.value)} onKeyDown=${(e) => { if (e.key === 'Enter') create(); if (e.key === 'Escape') setOpen(false); }} />
+          <div className="row">
+            <button className="btn btn-primary btn-sm" onClick=${create}>Adicionar lista</button>
+            <button className="btn btn-ghost btn-icon btn-sm" aria-label="Cancelar" onClick=${() => setOpen(false)}><${Icon} n="x" /></button>
+          </div>
+        </div>`
+      : html`<button className="add-list-btn" onClick=${() => setOpen(true)}><${Icon} n="plus" /> Adicionar lista</button>`}
+  </div>`;
+}
+
+/** Editor da esteira: sequência de listas e responsável por etapa. */
+function PipelineEditor({ lists, value, auto, onChange, onAutoChange, members = [], owners = [], onOwnersChange, currentListId }) {
+  const titleOf = (id) => lists.find((l) => l.id === id)?.title ?? 'Lista removida';
+  const available = lists.filter((l) => !value.includes(l.id));
+  const ownerOf = (id) => owners.find((o) => o.listId === id)?.personId || '';
+  function mv(i, delta) {
+    const n = [...value]; const j = i + delta;
+    if (j < 0 || j >= n.length) return;
+    [n[i], n[j]] = [n[j], n[i]]; onChange(n);
+  }
+  function setOwner(listId, pid) {
+    const n = owners.filter((o) => o.listId !== listId);
+    if (pid) n.push({ listId, personId: pid });
+    onOwnersChange(n);
+  }
+  return html`<div className="pipe">
+    <p className="pipe-h"><${Icon} n="moveRight" s=${14} /> Esteira automática</p>
+    ${value.length > 0 && html`<ol className="pipe-steps">
+      ${value.map((id, i) => html`<li key=${id} className=${'pipe-step' + (id === currentListId ? ' cur' : '')}>
+        <div className="pipe-row">
+          <span className="pipe-n">${i + 1}.</span>
+          <span className="pipe-t" title=${titleOf(id)}>${titleOf(id)}</span>
+          <button className="btn btn-ghost btn-icon btn-xs" aria-label="Subir etapa" disabled=${i === 0} onClick=${() => mv(i, -1)}><${Icon} n="arrowUp" s=${12} /></button>
+          <button className="btn btn-ghost btn-icon btn-xs" aria-label="Descer etapa" disabled=${i === value.length - 1} onClick=${() => mv(i, 1)}><${Icon} n="arrowDown" s=${12} /></button>
+          <button className="btn btn-ghost btn-icon btn-xs" aria-label="Remover etapa" onClick=${() => onChange(value.filter((v) => v !== id))}><${Icon} n="x" s=${12} /></button>
+        </div>
+        ${onOwnersChange && members.length > 0 && html`<select className="inp inp-sm" style=${{ height: 26, fontSize: 11.5 }} value=${ownerOf(id)}
+            aria-label=${'Responsável pela etapa ' + titleOf(id)} onChange=${(e) => setOwner(id, e.target.value)}>
+            <option value="">Sem responsável</option>
+            ${members.map((m) => html`<option key=${m.id} value=${m.id}>${m.name}</option>`)}
+          </select>`}
+      </li>`)}
+    </ol>`}
+    ${available.length > 0 && html`<select className="inp inp-sm" value="" aria-label="Adicionar etapa à esteira"
+        onChange=${(e) => { if (e.target.value) onChange([...value, e.target.value]); }}>
+        <option value="">+ Adicionar etapa…</option>
+        ${available.map((l) => html`<option key=${l.id} value=${l.id}>${l.title}</option>`)}
+      </select>`}
+    <label className="pipe-auto"><span>Avançar ao concluir o checklist</span>
+      <input type="checkbox" className="switch" checked=${!!auto} aria-label="Avanço automático" onChange=${(e) => onAutoChange(e.target.checked)} /></label>
+  </div>`;
+}
+
+/* ---------- Post-its (privados de cada pessoa) ---------- */
+function StickyNotes({ boardId }) {
+  useData();
+  const notes = Object.values(Data.notes).filter((n) => n.boardId === boardId && n.personId === Me.id).sort(byCreated);
+  function add() {
+    // Nasce perto do botão Post-it, no canto inferior direito, para não cobrir os cartões.
+    const off = (notes.length % 6) * 24;
+    const area = document.querySelector('.board-area');
+    const r = area ? area.getBoundingClientRect() : { width: 900, height: 600 };
+    const x = Math.max(0, Math.round(r.width - 220 - 24 - off));
+    const y = Math.max(0, Math.round(r.height - 170 - 64 - off));
+    put('notes', uid(), { boardId, personId: Me.id, content: '', color: 'yellow', x, y, w: 220, h: 170, createdAt: now() });
+  }
+  return html`<${Fragment}>
+    ${notes.map((n) => html`<${NoteItem} key=${n.id} note=${n} />`)}
+    <button className="btn btn-primary note-add" onClick=${add} title="Criar um lembrete visível só para você"><${Icon} n="sticky" /> Post-it</button>
+  <//>`;
+}
+function NoteItem({ note }) {
+  const [live, setLive] = useState(null);
+  const [text, setText] = useState(note.content || '');
+  const focused = useRef(false);
+  const drag = useRef(null);
+  const base = useRef(null);
+  const elRef = useRef(null);
+  useEffect(() => { if (!focused.current) setText(note.content || ''); }, [note.content]);
+  const cur = live || { x: note.x, y: note.y, w: note.w || 220, h: note.h || 170 };
+  function bounds() {
+    const area = elRef.current && elRef.current.closest('.board-area');
+    const r = area ? area.getBoundingClientRect() : { width: 4000, height: 4000 };
+    return { maxX: Math.max(0, r.width - 60), maxY: Math.max(0, r.height - 40) };
+  }
+  const clampXY = (x, y) => { const b = bounds(); return { x: Math.round(Math.min(b.maxX, Math.max(0, x))), y: Math.round(Math.min(b.maxY, Math.max(0, y))) }; };
+  return html`<div className="note" ref=${elRef} style=${{ left: cur.x, top: cur.y, width: cur.w, height: cur.h, background: NOTE_COLORS[note.color] || NOTE_COLORS.yellow }}>
+    <div className="note-bar" title="Arraste para mover"
+      onPointerDown=${(e) => { if (e.target.closest('button')) return; drag.current = { sx: e.clientX, sy: e.clientY, x: cur.x, y: cur.y }; e.currentTarget.setPointerCapture(e.pointerId); }}
+      onPointerMove=${(e) => { const d = drag.current; if (!d) return; setLive({ ...cur, ...clampXY(d.x + e.clientX - d.sx, d.y + e.clientY - d.sy) }); }}
+      onPointerUp=${(e) => {
+        const d = drag.current; drag.current = null; if (!d) return;
+        const p = clampXY(d.x + e.clientX - d.sx, d.y + e.clientY - d.sy);
+        if (p.x !== note.x || p.y !== note.y) patch('notes', note.id, p);
+        setLive(null);
+      }}
+      onPointerCancel=${() => { drag.current = null; setLive(null); }}>
+      ${Object.entries(NOTE_COLORS).map(([name, c]) => html`<button key=${name} className=${'note-dot' + (note.color === name ? ' on' : '')}
+          aria-label=${'Cor ' + NOTE_NAMES[name]} title=${'Cor ' + NOTE_NAMES[name]} style=${{ background: c }} onClick=${() => patch('notes', note.id, { color: name })}></button>`)}
+      <button className="note-del" aria-label="Excluir post-it" title="Excluir post-it" onClick=${() => remove('notes', note.id)}><${Icon} n="trash" s=${14} /></button>
+    </div>
+    <textarea value=${text} placeholder="Escreva um lembrete…" aria-label="Texto do post-it"
+      onFocus=${() => { focused.current = true; }} onChange=${(e) => setText(e.target.value)}
+      onBlur=${() => { focused.current = false; if (text !== (note.content || '')) patch('notes', note.id, { content: text }); }}></textarea>
+    <${ResizeHandle} label="Redimensionar post-it" onDrag=${(dx, dy, phase) => {
+      if (phase === 'start') { base.current = { ...cur }; return; }
+      if (phase === 'cancel') { setLive(null); return; }
+      const b = base.current || cur;
+      const next = { ...b, w: Math.round(Math.max(140, b.w + dx)), h: Math.round(Math.max(100, b.h + dy)) };
+      if (phase === 'end') { if (next.w !== note.w || next.h !== note.h) patch('notes', note.id, { w: next.w, h: next.h }); setLive(null); }
+      else setLive(next);
+    }} />
+  </div>`;
+}
+</script>
+<script>
+/* ---------- Janela do cartão ---------- */
+function CardModal({ cardId, board, lists, members, labels, onClose }) {
+  useData();
+  const card = Data.cards[cardId];
+  const [title, setTitle] = useState(card?.title || '');
+  const titleFocused = useRef(false);
+  const [editingDesc, setEditingDesc] = useState(false);
+  const [desc, setDesc] = useState('');
+  const [comment, setComment] = useState('');
+  const [panel, setPanel] = useState(null);
+  const [confirmDel, setConfirmDel] = useState(false);
+  const [lblName, setLblName] = useState('');
+  const [lblColor, setLblColor] = useState('blue');
+  const titleRef = useRef(null);
+  useEffect(() => { if (card && !titleFocused.current) setTitle(card.title); }, [card?.title]);
+  useEffect(() => { const el = titleRef.current; if (el) { el.style.height = 'auto'; el.style.height = el.scrollHeight + 'px'; } });
+  if (!card) return null;
+
+  const p = (fields, ...acts) => patch('cards', card.id, acts.length ? { ...fields, activities: logged(card, ...acts) } : fields);
+  const idx = lists.findIndex((l) => l.id === card.listId);
+  const curList = lists[idx];
+  const prevList = idx > 0 ? lists[idx - 1] : null;
+  const nextList = idx >= 0 && idx < lists.length - 1 ? lists[idx + 1] : null;
+  const checklists = card.checklists || [];
+
+  function moveTo(target, extraAct) {
+    const acts = extraAct ? [extraAct, `moveu o cartão para “${target.title}”`] : [`moveu o cartão para “${target.title}”`];
+    p({ listId: target.id, position: lastPos(target.id, card.id) + 1000, isCompleted: false }, ...acts);
+    toast(`Movido para “${target.title}”`, 'success');
+  }
+  function toggleDone(v) {
+    if (card.isTask) { checkTask(card, v); return; }
+    if (v && !card.isTask && nextList) { moveTo(nextList, 'marcou como concluído'); return; }
+    p({ isCompleted: v }, v ? (card.isTask ? 'concluiu a tarefa' : 'marcou como concluído') : (card.isTask ? 'reabriu a tarefa' : 'reabriu o cartão'));
+  }
+  // Esteira: toda mudança no checklist verifica se o cartão deve avançar.
+  function setChecklists(next) {
+    const adv = pipelineAdvance({ ...card, checklists: next });
+    if (adv) {
+      patch('cards', card.id, { checklists: next, ...adv.patch });
+      toast(`Checklist concluído — cartão avançou para “${adv.target.title}”${adv.owner ? ` e foi para ${adv.owner.name}` : ''}`, 'success');
+    } else patch('cards', card.id, { checklists: next });
+  }
+  function saveTitle() {
+    titleFocused.current = false;
+    const v = title.trim();
+    if (!v) { setTitle(card.title); return; }
+    if (v !== card.title) p({ title: v });
+  }
+  function addComment() {
+    const v = comment.trim(); if (!v) return;
+    p({ comments: [...(card.comments || []), { id: uid(), personId: Me.id, content: v, at: now() }] }, 'comentou');
+    setComment('');
+  }
+  function toggleMember(pid) {
+    const on = (card.memberIds || []).includes(pid);
+    p({ memberIds: on ? card.memberIds.filter((x) => x !== pid) : [...(card.memberIds || []), pid] },
+      on ? `removeu ${personName(pid)} do cartão` : `adicionou ${personName(pid)} ao cartão`);
+  }
+  function toggleLabel(lid) {
+    const on = (card.labelIds || []).includes(lid);
+    p({ labelIds: on ? card.labelIds.filter((x) => x !== lid) : [...(card.labelIds || []), lid] });
+  }
+  function createLabel() {
+    const name = lblName.trim(); if (!name) return;
+    const id = uid();
+    patch('boards', board.id, { labels: [...(board.labels || []), { id, name, color: lblColor }] });
+    p({ labelIds: [...(card.labelIds || []), id] });
+    setLblName('');
+  }
+  const boardLabels = Data.boards[board.id]?.labels || labels;
+  const cardLabels = boardLabels.filter((l) => (card.labelIds || []).includes(l.id));
+  const cardMembers = (card.memberIds || []).map((pid) => Data.people[pid]).filter(Boolean);
+  const togglePanel = (k) => setPanel((cur) => (cur === k ? null : k));
+
+  const head = html`<div className="cm-head">
+      <input type="checkbox" checked=${!!card.isCompleted} aria-label="Concluído"
+        title=${!card.isTask && nextList && !card.isCompleted ? `Concluir e mover para “${nextList.title}”` : 'Concluído'} onChange=${(e) => toggleDone(e.target.checked)} />
+      <textarea ref=${titleRef} className="cm-title" rows="1" value=${title} aria-label=${card.isTask ? 'Título da tarefa' : 'Título do cartão'}
+        onFocus=${() => { titleFocused.current = true; }} onChange=${(e) => setTitle(e.target.value.replace(/\n/g, ' '))} onBlur=${saveTitle}
+        onKeyDown=${(e) => { if (e.key === 'Enter') { e.preventDefault(); e.currentTarget.blur(); } }}></textarea>
+    </div>
+    <p className="cm-where">${card.isTask ? 'Tarefa' : 'Cartão'} na lista ${curList ? `“${curList.title}”` : '—'}, quadro “${board.title}”</p>`;
+
+  if (card.isTask) {
+    return html`<${Dialog} open=${true} onClose=${onClose} width=${520} label="Detalhes da tarefa">
+      ${head}
+      <${ScheduleEditor} card=${card} />
+      <button className="btn btn-ghost btn-danger" onClick=${() => { remove('cards', card.id); onClose(); }}><${Icon} n="trash" /> Excluir tarefa</button>
+    <//>`;
+  }
+
+  return html`<${Dialog} open=${true} onClose=${onClose} width=${800} label="Detalhes do cartão">
+    ${head}
+    ${(cardLabels.length > 0 || cardMembers.length > 0 || card.dueDate) && html`<div className="row" style=${{ flexWrap: 'wrap', gap: 14, margin: '12px 0 0 34px' }}>
+      ${cardMembers.length > 0 && html`<div className="av-stack" style=${{ marginLeft: 0 }}>${cardMembers.map((m) => html`<${Avatar} key=${m.id} person=${m} size=${26} />`)}</div>`}
+      ${cardLabels.length > 0 && html`<div className="chips">${cardLabels.map((l) => html`<span key=${l.id} className="chip" style=${lblStyle(l.color)}>${l.name || LABEL_NAMES[l.color]}</span>`)}</div>`}
+      ${card.dueDate && html`<span className=${'due due-' + dueState(card.dueDate, card.isCompleted)} style=${{ fontSize: 12 }}><${Icon} n="calendar" s=${12} /> Prazo ${fmtDayLong(card.dueDate)}</span>`}
+    </div>`}
+
+    <div className="cm-grid">
+      <div style=${{ minWidth: 0 }}>
+        <section className="cm-sec">
+          <h3><${Icon} n="text" /> Descrição</h3>
+          ${editingDesc
+            ? html`<div style=${{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                <textarea className="inp" rows="7" autoFocus=${true} value=${desc} placeholder="Escreva com Markdown…" aria-label="Descrição"
+                  onChange=${(e) => setDesc(e.target.value)} onKeyDown=${(e) => { if (e.key === 'Escape') { e.stopPropagation(); setEditingDesc(false); } }}></textarea>
+                <p className="hint">Use **negrito**, *itálico*, listas com - e links colando o endereço.</p>
+                <div className="row">
+                  <button className="btn btn-primary btn-sm" onClick=${() => { if (desc !== (card.description || '')) p({ description: desc }, 'editou a descrição'); setEditingDesc(false); }}>Salvar</button>
+                  <button className="btn btn-ghost btn-sm" onClick=${() => setEditingDesc(false)}>Cancelar</button>
+                </div>
+              </div>`
+            : html`<div className="desc-view" role="button" tabIndex="0" onClick=${(e) => { if (e.target.closest('a')) return; setDesc(card.description || ''); setEditingDesc(true); }}
+                onKeyDown=${(e) => { if (e.key === 'Enter') { setDesc(card.description || ''); setEditingDesc(true); } }}>
+                ${card.description
+                  ? html`<div className="md" dangerouslySetInnerHTML=${{ __html: renderMd(card.description) }}></div>`
+                  : html`<span className="muted">Adicionar descrição…</span>`}
+              </div>`}
+        </section>
+
+        <section className="cm-sec">
+          <div className="row" style=${{ justifyContent: 'space-between', marginBottom: 8 }}>
+            <h3 style=${{ margin: 0 }}><${Icon} n="checkSquare" /> Checklists</h3>
+            <button className="btn btn-secondary btn-sm" onClick=${() => setChecklists([...checklists, { id: uid(), title: 'Checklist', items: [] }])}>
+              <${Icon} n="plus" s=${14} /> Novo checklist</button>
+          </div>
+          ${checklists.length === 0 && html`<p className="muted small">Sem checklist. Com a esteira ligada, o cartão avança sozinho quando todos os itens forem concluídos.</p>`}
+          ${checklists.map((cl) => html`<${ChecklistBlock} key=${cl.id} cl=${cl}
+              onChange=${(n) => setChecklists(checklists.map((x) => (x.id === cl.id ? n : x)))}
+              onDelete=${() => setChecklists(checklists.filter((x) => x.id !== cl.id))} />`)}
+        </section>
+
+        <section className="cm-sec">
+          <h3><${Icon} n="link" /> Anexos e links</h3>
+          <${Attachments} card=${card} onChange=${(list, act) => p({ attachments: list }, act)} />
+        </section>
+
+        <section className="cm-sec">
+          <h3><${Icon} n="message" /> Comentários</h3>
+          <div className="row" style=${{ alignItems: 'flex-start' }}>
+            <${Avatar} person=${Data.people[Me.id]} size=${30} />
+            <div className="grow" style=${{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+              <textarea className="inp" rows="2" value=${comment} placeholder="Escreva um comentário…" aria-label="Novo comentário"
+                onChange=${(e) => setComment(e.target.value)} onKeyDown=${(e) => { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) addComment(); }}></textarea>
+              ${comment.trim() && html`<div><button className="btn btn-primary btn-sm" onClick=${addComment}>Enviar</button></div>`}
+            </div>
+          </div>
+          ${[...(card.comments || [])].reverse().map((c) => html`<div key=${c.id} className="comment">
+            <${Avatar} person=${Data.people[c.personId]} size=${30} />
+            <div className="body">
+              <p className="who">${personName(c.personId)}<span>${fmtWhen(c.at)}</span></p>
+              <p className="txt">${c.content}</p>
+            </div>
+            ${c.personId === Me.id && html`<button className="btn btn-ghost btn-icon btn-xs" aria-label="Excluir comentário" title="Excluir comentário"
+                onClick=${() => p({ comments: card.comments.filter((x) => x.id !== c.id) })}><${Icon} n="trash" s=${13} /></button>`}
+          </div>`)}
+        </section>
+
+        ${(card.activities || []).length > 0 && html`<section className="cm-sec">
+          <h3><${Icon} n="history" /> Histórico</h3>
+          <ul className="hist">
+            ${card.activities.map((a) => html`<li key=${a.id}><strong style=${{ color: 'var(--foreground)', fontWeight: 500 }}>${personName(a.personId)}</strong> ${a.action}, ${fmtWhen(a.at)}</li>`)}
+          </ul>
+        </section>`}
+      </div>
+
+      <aside>
+        <div className="side-sec">
+          <button className=${'btn btn-secondary btn-sm btn-block' + (panel === 'members' ? ' is-active' : '')} aria-expanded=${panel === 'members'}
+            onClick=${() => togglePanel('members')}><${Icon} n="users" s=${14} /> Pessoas</button>
+          ${panel === 'members' && html`<div className="inline-panel">
+            ${members.map((m) => { const on = (card.memberIds || []).includes(m.id); return html`<button key=${m.id} className=${'menu-item' + (on ? ' on' : '')}
+                onClick=${() => toggleMember(m.id)}><${Avatar} person=${m} size=${22} /><span className="trunc">${m.name}</span>
+                ${on && html`<span className="trail"><${Icon} n="check" s=${14} /></span>`}</button>`; })}
+          </div>`}
+          <button className=${'btn btn-secondary btn-sm btn-block' + (panel === 'labels' ? ' is-active' : '')} aria-expanded=${panel === 'labels'}
+            onClick=${() => togglePanel('labels')}><${Icon} n="tag" s=${14} /> Etiquetas</button>
+          ${panel === 'labels' && html`<div className="inline-panel">
+            ${boardLabels.map((l) => { const on = (card.labelIds || []).includes(l.id); return html`<button key=${l.id} className="menu-item" onClick=${() => toggleLabel(l.id)}>
+                <span className="swatch" style=${{ ...lblStyle(l.color), width: 30, height: 16 }}></span><span className="trunc">${l.name || LABEL_NAMES[l.color]}</span>
+                ${on && html`<span className="trail"><${Icon} n="check" s=${14} /></span>`}</button>`; })}
+            <div className="lbl-new">
+              <input className="inp inp-sm" value=${lblName} placeholder="Nova etiqueta" aria-label="Nome da nova etiqueta"
+                onChange=${(e) => setLblName(e.target.value)} onKeyDown=${(e) => { if (e.key === 'Enter') createLabel(); }} />
+              <button className="btn btn-secondary btn-sm" onClick=${createLabel} disabled=${!lblName.trim()}>Criar</button>
+              <div className="color-row" role="group" aria-label="Cor da etiqueta">
+                ${LABEL_COLORS.map((c) => html`<button key=${c} className=${'color-opt' + (lblColor === c ? ' on' : '')} style=${lblStyle(c)}
+                    aria-label=${LABEL_NAMES[c]} title=${LABEL_NAMES[c]} onClick=${() => setLblColor(c)}></button>`)}
+              </div>
+            </div>
+          </div>`}
+        </div>
+
+        <div className="side-sec">
+          <p className="side-h"><${Icon} n="calendar" s=${14} /> Datas</p>
+          <label className="field"><span className="hint">Início</span>
+            <input type="date" className="inp inp-sm" value=${card.startDate || ''} onChange=${(e) => p({ startDate: e.target.value || null })} /></label>
+          <label className="field"><span className="hint">Prazo</span>
+            <input type="date" className="inp inp-sm" value=${card.dueDate || ''}
+              onChange=${(e) => p({ dueDate: e.target.value || null }, e.target.value ? `definiu o prazo para ${fmtDayLong(e.target.value)}` : 'removeu o prazo')} /></label>
+        </div>
+
+        ${lists.length > 1 && html`<div className="side-sec">
+          <p className="side-h"><${Icon} n="moveRight" s=${14} /> Mover</p>
+          <div className="move-row">
+            <button className="btn btn-secondary btn-sm" disabled=${!prevList} onClick=${() => prevList && moveTo(prevList)}
+              title=${prevList ? `Voltar para ${prevList.title}` : 'Primeira lista'} aria-label="Voltar uma lista"><${Icon} n="arrowLeft" /></button>
+            <button className="btn btn-primary btn-sm" disabled=${!nextList} onClick=${() => nextList && moveTo(nextList)}
+              title=${nextList ? `Avançar para ${nextList.title}` : 'Última lista'} aria-label="Avançar uma lista"><${Icon} n="arrowRight" /></button>
+          </div>
+          <select className="inp inp-sm" value=${card.listId} aria-label="Mover para a lista"
+            onChange=${(e) => { const t = lists.find((l) => l.id === e.target.value); if (t && t.id !== card.listId) moveTo(t); }}>
+            ${lists.map((l) => html`<option key=${l.id} value=${l.id}>${l.title}</option>`)}
+          </select>
+          ${nextList && html`<p className="hint">Ao marcar como concluído, o cartão vai para “${nextList.title}”.</p>`}
+        </div>`}
+
+        ${lists.length > 1 && html`<div className="side-sec">
+          <${PipelineEditor} lists=${lists} value=${card.pipelineListIds || []} auto=${card.pipelineAuto !== false} currentListId=${card.listId}
+            onChange=${(next) => p({ pipelineListIds: next })} onAutoChange=${(v) => p({ pipelineAuto: v })}
+            members=${members} owners=${card.pipelineOwners || []} onOwnersChange=${(next) => p({ pipelineOwners: next })} />
+        </div>`}
+
+        <button className="btn btn-ghost btn-danger btn-sm btn-block" onClick=${() => setConfirmDel(true)}><${Icon} n="trash" s=${14} /> Excluir cartão</button>
+      </aside>
+    </div>
+    <${ConfirmDialog} open=${confirmDel} onClose=${() => setConfirmDel(false)} danger=${true} confirmLabel="Excluir cartão"
+      title="Excluir este cartão?" body=${`“${card.title}” e tudo o que há nele serão excluídos. Isso não pode ser desfeito.`}
+      onConfirm=${() => { remove('cards', card.id); onClose(); }} />
+  <//>`;
+}
+
+function ScheduleFields({ sch, onSet, noneLabel = 'Não se repete' }) {
+  const kind = !sch ? 'none' : sch.type === 'monthly' ? 'monthly' : ((sch.days || []).slice().sort().join() === '1,2,3,4,5' ? 'workdays' : 'weekly');
+  function onKind(k) {
+    const since = todayStr();
+    if (k === 'none') onSet(null);
+    else if (k === 'workdays') onSet({ type: 'weekly', days: [1, 2, 3, 4, 5], since });
+    else if (k === 'weekly') onSet({ type: 'weekly', days: sch && sch.type === 'weekly' && kind !== 'workdays' ? sch.days : [5], since });
+    else onSet({ type: 'monthly', day: sch && sch.type === 'monthly' ? sch.day : new Date().getDate(), since });
+  }
+  function toggleDay(d) {
+    const days = sch.days || [];
+    const next = days.includes(d) ? days.filter((x) => x !== d) : [...days, d];
+    if (!next.length) { toast('Escolha pelo menos um dia.', 'error'); return; }
+    onSet({ type: 'weekly', days: next, since: todayStr() });
+  }
+  return html`<${Fragment}>
+    <select className="inp" value=${kind} aria-label="Repetição" onChange=${(e) => onKind(e.target.value)}>
+      <option value="none">${noneLabel}</option>
+      <option value="workdays">Todo dia útil (segunda a sexta)</option>
+      <option value="weekly">Toda semana, nos dias escolhidos</option>
+      <option value="monthly">Todo mês, num dia fixo</option>
+    </select>
+    ${kind === 'weekly' && html`<div className="wd-row" role="group" aria-label="Dias da semana">
+      ${WD_ORDER.map((d) => html`<button key=${d} className=${'wd-btn' + ((sch.days || []).includes(d) ? ' on' : '')} aria-pressed=${(sch.days || []).includes(d)}
+          title=${WD_FULL[d]} onClick=${() => toggleDay(d)}>${WD_SHORT[d]}</button>`)}
+    </div>`}
+    ${kind === 'monthly' && html`<label className="row" style=${{ fontSize: 13 }}>No dia
+      <input type="number" className="inp" style=${{ width: 76 }} min="1" max="31" value=${sch.day} aria-label="Dia do mês"
+        onChange=${(e) => { const v = Math.min(31, Math.max(1, parseInt(e.target.value, 10) || 1)); onSet({ type: 'monthly', day: v, since: todayStr() }); }} />
+      de cada mês</label>`}
+    ${kind === 'monthly' && sch.day > 28 && html`<p className="hint">Nos meses sem o dia ${sch.day}, vale o último dia do mês.</p>`}
+  <//>`;
+}
+
+function ScheduleEditor({ card }) {
+  const sch = card.schedule && card.schedule.type ? card.schedule : null;
+  const st = sch ? schedStatus(card) : null;
+  function setSchedule(next) {
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const doneFor = next && card.isCompleted && occursOn(next, today) ? todayStr() : null;
+    patch('cards', card.id, {
+      schedule: next, doneFor, prevDoneFor: null, prevLastDone: null, lastDoneDate: doneFor,
+      isCompleted: next ? !!doneFor : !!card.isCompleted,
+      activities: logged(card, next ? `definiu a repetição: ${schedLabel(next)}` : 'removeu a repetição'),
+    });
+  }
+  const statusTxt = !st ? '' : st.k === 'due' ? 'Deve ser executada hoje.'
+    : st.k === 'late' ? `Atrasada desde ${fmtWd(st.since)}${st.missed > 1 ? ` (${st.missed} execuções perdidas)` : ''}. Ao concluir, ela volta a ficar em dia.`
+    : st.k === 'done' ? (st.doneFor > todayStr() ? `Concluída antes da data; vale para ${fmtWd(st.doneFor)}.` : `Feita hoje. Próxima: ${fmtWd(st.next)}.`)
+    : `Próxima execução: ${fmtWd(st.next)}. Se concluir antes, vale para essa data.`;
+  return html`<section className="cm-sec" style=${{ marginTop: 20 }}>
+    <h3><${Icon} n="repeat" /> Repetição</h3>
+    <div style=${{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+      <${ScheduleFields} sch=${sch} onSet=${setSchedule} />
+      ${st && html`<p className=${'sched-status ' + st.k}>${schedLabel(sch)}. ${statusTxt}</p>`}
+      ${sch ? html`<p className="hint">Se não for concluída na data, fica atrasada e aparece no aviso do quadro. Depois de concluída, desmarca sozinha na próxima data. O Desmarcar concluídas também a desmarca, desfazendo a conclusão.</p>`
+        : html`<p className="hint">Marque a caixa para concluir. Com repetição, a tarefa passa a ter datas certas para ser executada.</p>`}
+    </div>
+  </section>`;
+}
+
+function ChecklistBlock({ cl, onChange, onDelete }) {
+  const [text, setText] = useState('');
+  const [name, setName] = useState(cl.title);
+  const [confirm, setConfirm] = useState(false);
+  useEffect(() => setName(cl.title), [cl.title]);
+  const items = cl.items || [];
+  const done = items.filter((i) => i.checked).length;
+  const pct = items.length ? Math.round((done / items.length) * 100) : 0;
+  const setItems = (its) => onChange({ ...cl, items: its });
+  function add() {
+    const v = text.trim(); if (!v) return;
+    setItems([...items, { id: uid(), content: v, checked: false }]); setText('');
+  }
+  return html`<div className="cl">
+    <div className="cl-head">
+      <input className="cl-name" value=${name} aria-label="Nome do checklist" onChange=${(e) => setName(e.target.value)}
+        onBlur=${() => { const v = name.trim(); if (v && v !== cl.title) onChange({ ...cl, title: v }); else setName(cl.title); }}
+        onKeyDown=${(e) => { if (e.key === 'Enter') e.currentTarget.blur(); }} />
+      <span className="muted small">${done}/${items.length}</span>
+      <button className="btn btn-ghost btn-icon btn-xs" aria-label="Excluir checklist" title="Excluir checklist"
+        onClick=${() => (items.length ? setConfirm(true) : onDelete())}><${Icon} n="trash" s=${14} /></button>
+    </div>
+    <div className=${'progress' + (pct === 100 ? ' full' : '')} role="progressbar" aria-valuenow=${pct} aria-valuemin="0" aria-valuemax="100" aria-label="Progresso do checklist">
+      <span style=${{ width: pct + '%' }}></span></div>
+    <ul className="cl-items">
+      ${items.map((it) => html`<li key=${it.id} className="cl-item">
+        <input type="checkbox" checked=${!!it.checked} aria-label=${it.content}
+          onChange=${(e) => setItems(items.map((x) => (x.id === it.id ? { ...x, checked: e.target.checked } : x)))} />
+        <span className=${'cl-text' + (it.checked ? ' done' : '')}>${it.content}</span>
+        <button className="btn btn-ghost btn-icon btn-xs x" aria-label="Remover item" title="Remover item"
+          onClick=${() => setItems(items.filter((x) => x.id !== it.id))}><${Icon} n="x" s=${13} /></button>
+      </li>`)}
+    </ul>
+    <div className="row">
+      <input className="inp inp-sm" value=${text} placeholder="Novo item" aria-label="Novo item do checklist"
+        onChange=${(e) => setText(e.target.value)} onKeyDown=${(e) => { if (e.key === 'Enter') { e.preventDefault(); add(); } }} />
+      <button className="btn btn-secondary btn-sm" onClick=${add} disabled=${!text.trim()}>Adicionar</button>
+    </div>
+    <${ConfirmDialog} open=${confirm} onClose=${() => setConfirm(false)} danger=${true} confirmLabel="Excluir checklist"
+      title=${`Excluir “${cl.title}”?`} body=${`${plural(items.length, 'item será excluído', 'itens serão excluídos')}.`} onConfirm=${onDelete} />
+  </div>`;
+}
+
+function Attachments({ card, onChange }) {
+  const [name, setName] = useState('');
+  const [url, setUrl] = useState('');
+  const list = card.attachments || [];
+  function add() {
+    let u = url.trim(); if (!u) return;
+    if (!/^[a-z][a-z0-9+.-]*:/i.test(u)) u = 'https://' + u;
+    if (!/^(https?:|mailto:)/i.test(u)) { toast('Use um endereço que comece com https://', 'error'); return; }
+    const n = name.trim() || u.replace(/^https?:\/\//i, '').slice(0, 60);
+    onChange([...list, { id: uid(), name: n, url: u, personId: Me.id, at: now() }], `anexou “${n}”`);
+    setName(''); setUrl('');
+  }
+  return html`<div>
+    ${list.length === 0 && html`<p className="muted small">Cole links de documentos, planilhas ou pastas.</p>`}
+    ${list.map((a) => html`<div key=${a.id} className="att">
+      <${Icon} n="clip" s=${14} className="muted" />
+      <a href=${a.url} target="_blank" rel="noopener noreferrer" title=${a.url}>${a.name}</a>
+      <button className="btn btn-ghost btn-icon btn-xs" style=${{ marginLeft: 'auto' }} aria-label="Remover anexo" title="Remover anexo"
+        onClick=${() => onChange(list.filter((x) => x.id !== a.id), `removeu o anexo “${a.name}”`)}><${Icon} n="trash" s=${13} /></button>
+    </div>`)}
+    <div className="att-form">
+      <input className="inp inp-sm" value=${name} placeholder="Nome" aria-label="Nome do anexo" onChange=${(e) => setName(e.target.value)} />
+      <input className="inp inp-sm" value=${url} placeholder="https://…" aria-label="Endereço do anexo" onChange=${(e) => setUrl(e.target.value)}
+        onKeyDown=${(e) => { if (e.key === 'Enter') add(); }} />
+      <button className="btn btn-secondary btn-sm" onClick=${add} disabled=${!url.trim()}><${Icon} n="plus" s=${14} /> Anexar</button>
+    </div>
+  </div>`;
+}
+</script>
+<script>
+/* ---------- Escolha de perfil ---------- */
+function WhoAmI() {
+  useData();
+  const people = Object.values(Data.people).sort((a, b) => (a.name || '').localeCompare(b.name || '', 'pt-BR'));
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  function create() {
+    const n = name.trim(); if (!n) return;
+    const id = uid();
+    put('people', id, { name: n, email: email.trim() || null, createdAt: now() });
+    setMe(id);
+  }
+  const onKey = (e) => { if (e.key === 'Enter') create(); };
+  return html`<div className="center-page">
+    <h1 className="hero-brand">Flowtify<span className="dot-accent">.</span></h1>
+    <div className="hero-flow" aria-hidden="true"><span>A fazer</span><${Icon} n="arrowRight" s=${12} /><span>Em andamento</span><${Icon} n="arrowRight" s=${12} /><span>Concluído</span></div>
+    <p className="muted">${people.length
+      ? 'Quem está usando? Escolha seu nome para abrir seus quadros e cartões.'
+      : 'Crie seu perfil para começar. Cada pessoa da equipe usa o próprio perfil, e é por ele que os cartões chegam até você.'}</p>
+    ${people.length > 0 && html`<div className="who-list">
+      ${people.map((p) => html`<button key=${p.id} className="who-btn" onClick=${() => setMe(p.id)}>
+        <${Avatar} person=${p} size=${36} /><span><strong>${p.name}</strong>${p.email && html`<small>${p.email}</small>`}</span></button>`)}
+    </div>`}
+    <div className="who-form" style=${{ marginTop: people.length ? 0 : 22 }}>
+      <h2>${people.length ? 'Não está na lista?' : 'Seu perfil'}</h2>
+      <label className="field">Nome<input className="inp" value=${name} autoFocus=${!people.length} placeholder="Ex.: Guilherme" onChange=${(e) => setName(e.target.value)} onKeyDown=${onKey} /></label>
+      <label className="field">E-mail (opcional)<input className="inp" type="email" value=${email} placeholder="nome@empresa.com" onChange=${(e) => setEmail(e.target.value)} onKeyDown=${onKey} /></label>
+      <button className="btn btn-primary" onClick=${create} disabled=${!name.trim()}>Criar perfil e entrar</button>
+    </div>
+    <button className="btn btn-ghost btn-sm" style=${{ marginTop: 14 }} onClick=${() => window.dispatchEvent(new Event('flowtify:backup'))}>
+      <${Icon} n="upload" s=${14} /> Trazer quadros de um backup</button>
+  </div>`;
+}
+
+/* ---------- Meus quadros ---------- */
+function Home({ go }) {
+  useData();
+  const wss = myWorkspaces();
+  const [activeWs, setActiveWs] = useState(() => LS.get('flowtify:ws', null));
+  const cur = wss.find((w) => w.id === activeWs) || wss[0] || null;
+  const [newWsOpen, setNewWsOpen] = useState(false);
+  const [newBoardOpen, setNewBoardOpen] = useState(false);
+  const [shareWs, setShareWs] = useState(null);
+  const [confirm, setConfirm] = useState(null);
+  const [dragId, setDragId] = useState(null);
+  const [overId, setOverId] = useState(null);
+  const select = (id) => { setActiveWs(id); LS.set('flowtify:ws', id); };
+
+  if (!wss.length) {
+    return html`<${FirstWorkspace} onCreate=${(n) => select(createWorkspace(n))} />`;
+  }
+  const boards = cur ? boardsOf(cur.id) : [];
+  const isOwner = cur && cur.ownerId === Me.id;
+
+  function dropOn(targetId) {
+    if (!dragId || dragId === targetId) return;
+    const arr = [...boards];
+    const from = arr.findIndex((b) => b.id === dragId); const to = arr.findIndex((b) => b.id === targetId);
+    if (from < 0 || to < 0) return;
+    const [m] = arr.splice(from, 1); arr.splice(to, 0, m);
+    arr.forEach((b, i) => { const pos = (i + 1) * 1000; if (b.position !== pos) patch('boards', b.id, { position: pos }); });
+  }
+
+  return html`<div className="home">
+    <aside className="ws-side">
+      <div className="ws-head">
+        <h2>Espaços de trabalho</h2>
+        <button className="btn btn-ghost btn-icon btn-xs" aria-label="Novo espaço" title="Novo espaço" onClick=${() => setNewWsOpen(true)}><${Icon} n="plus" s=${15} /></button>
+      </div>
+      <nav className="ws-list" aria-label="Espaços de trabalho">
+        ${wss.map((ws) => html`<${WorkspaceItem} key=${ws.id} ws=${ws} isCurrent=${cur && ws.id === cur.id} onSelect=${() => select(ws.id)}
+            onShare=${() => setShareWs(ws.id)}
+            onDelete=${() => setConfirm({ title: `Excluir o espaço “${ws.name}”?`, body: `${plural(boardsOf(ws.id).length, 'quadro será excluído', 'quadros serão excluídos')} com todas as listas e cartões. Isso não pode ser desfeito.`, label: 'Excluir espaço', run: () => deleteWorkspace(ws.id) })} />`)}
+      </nav>
+      <button className="btn btn-ghost btn-sm" style=${{ marginTop: 12, color: 'var(--muted-foreground)' }} onClick=${() => window.dispatchEvent(new Event('flowtify:backup'))}>
+        <${Icon} n="download" s=${14} /> Backup dos dados</button>
+    </aside>
+
+    <main className="boards-main">
+      <div className="boards-top">
+        <div>
+          <h1>Quadros</h1>
+          <p className="muted" style=${{ marginTop: 2 }}>${cur?.name}${cur && html`<span>, ${plural(membersOfWs(cur).length, 'pessoa', 'pessoas')}</span>`}</p>
+        </div>
+        ${cur && html`<button className="btn btn-outline" onClick=${() => setShareWs(cur.id)}><${Icon} n="userPlus" /> Convidar pessoas</button>`}
+      </div>
+      ${boards.length > 1 && html`<p className="hint" style=${{ marginTop: 14 }}>Arraste os quadros para mudar a ordem; o menu Quadros segue a mesma ordem.</p>`}
+      <div className="grid">
+        ${boards.map((b) => {
+          const nLists = listsOf(b.id).length;
+          const nCards = cardsOfBoard(b.id).length;
+          return html`<div key=${b.id} className=${'tile' + (overId === b.id && dragId !== b.id ? ' over' : '') + (dragId === b.id ? ' dragging' : '')}
+            role="link" tabIndex="0" style=${bgStyle(b.background)} draggable="true" aria-label=${'Abrir quadro ' + b.title}
+            onClick=${() => go({ name: 'board', id: b.id })} onKeyDown=${(e) => { if (e.key === 'Enter') go({ name: 'board', id: b.id }); }}
+            onDragStart=${(e) => { setDragId(b.id); e.dataTransfer.effectAllowed = 'move'; try { e.dataTransfer.setData('text/plain', b.id); } catch (err) { /* ignora */ } }}
+            onDragOver=${(e) => { e.preventDefault(); if (overId !== b.id) setOverId(b.id); }}
+            onDragLeave=${() => setOverId((o) => (o === b.id ? null : o))}
+            onDrop=${(e) => { e.preventDefault(); dropOn(b.id); setOverId(null); setDragId(null); }}
+            onDragEnd=${() => { setDragId(null); setOverId(null); }}>
+            <h3>${b.title}</h3>
+            <p>${plural(nLists, 'lista', 'listas')}, ${plural(nCards, 'cartão', 'cartões')}</p>
+            <button className="btn btn-icon btn-xs tile-del" aria-label=${'Excluir quadro ' + b.title} title="Excluir quadro"
+              onClick=${(e) => { e.stopPropagation(); setConfirm({ title: `Excluir o quadro “${b.title}”?`, body: `${plural(nCards, 'cartão será excluído', 'cartões serão excluídos')} junto com as listas. Isso não pode ser desfeito.`, label: 'Excluir quadro', run: () => deleteBoard(b.id) }); }}>
+              <${Icon} n="trash" s=${14} /></button>
+          </div>`;
+        })}
+        ${cur && html`<button className="tile-new" onClick=${() => setNewBoardOpen(true)}><${Icon} n="plus" /> Criar quadro</button>`}
+      </div>
+    </main>
+
+    <${NameDialog} open=${newWsOpen} onClose=${() => setNewWsOpen(false)} title="Novo espaço de trabalho"
+      sub="Um espaço agrupa os quadros de um time ou projeto." placeholder="Ex.: Comissionamento" cta="Criar espaço"
+      onSave=${(n) => { select(createWorkspace(n)); toast('Espaço de trabalho criado', 'success'); }} />
+    ${cur && html`<${NewBoardDialog} open=${newBoardOpen} onClose=${() => setNewBoardOpen(false)}
+        onCreate=${(t, bg) => { const id = createBoard(cur.id, t, bg); toast('Quadro criado', 'success'); go({ name: 'board', id }); }} />`}
+    ${shareWs && Data.workspaces[shareWs] && html`<${ShareDialog} ws=${Data.workspaces[shareWs]} onClose=${() => setShareWs(null)} />`}
+    <${ConfirmDialog} open=${!!confirm} onClose=${() => setConfirm(null)} danger=${true} title=${confirm?.title || ''} body=${confirm?.body || ''}
+      confirmLabel=${confirm?.label || 'Excluir'} onConfirm=${() => confirm && confirm.run()} />
+  </div>`;
+}
+
+function WorkspaceItem({ ws, isCurrent, onSelect, onShare, onDelete }) {
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState(ws.name);
+  const isOwner = ws.ownerId === Me.id;
+  function commit() {
+    setEditing(false);
+    const v = draft.trim();
+    if (v && v !== ws.name) patch('workspaces', ws.id, { name: v });
+  }
+  if (editing) {
+    return html`<div className="ws-item">
+      <input className="inp inp-sm" autoFocus=${true} value=${draft} aria-label="Nome do espaço" onChange=${(e) => setDraft(e.target.value)} onBlur=${commit}
+        onKeyDown=${(e) => { if (e.key === 'Enter') e.currentTarget.blur(); if (e.key === 'Escape') { setDraft(ws.name); setEditing(false); } }} />
+    </div>`;
+  }
+  return html`<div className=${'ws-item' + (isCurrent ? ' cur' : '')}>
+    <button className="ws-btn" onClick=${onSelect} aria-current=${isCurrent ? 'true' : undefined} title=${ws.name}>${ws.name}</button>
+    <div className="ws-tools">
+      <button className="btn btn-ghost btn-icon btn-xs" aria-label="Pessoas do espaço" title="Pessoas do espaço" onClick=${onShare}><${Icon} n="users" s=${13} /></button>
+      ${isOwner && html`<button className="btn btn-ghost btn-icon btn-xs" aria-label="Renomear espaço" title="Renomear espaço" onClick=${() => { setDraft(ws.name); setEditing(true); }}><${Icon} n="pencil" s=${13} /></button>`}
+      ${isOwner && html`<button className="btn btn-ghost btn-icon btn-xs" aria-label="Excluir espaço" title="Excluir espaço" onClick=${onDelete}><${Icon} n="trash" s=${13} /></button>`}
+    </div>
+  </div>`;
+}
+
+function FirstWorkspace({ onCreate }) {
+  const [name, setName] = useState('');
+  const others = Object.values(Data.workspaces).length > 0;
+  const go = () => { const v = name.trim(); if (v) onCreate(v); };
+  return html`<div className="page"><div className="empty-box">
+    <h1>Crie seu primeiro espaço de trabalho</h1>
+    <p className="muted">Um espaço agrupa os quadros de um time ou projeto. Depois você convida as pessoas que vão trabalhar nele.</p>
+    <div className="row" style=${{ marginTop: 18 }}>
+      <input className="inp" autoFocus=${true} value=${name} placeholder="Ex.: Comissionamento" aria-label="Nome do espaço"
+        onChange=${(e) => setName(e.target.value)} onKeyDown=${(e) => { if (e.key === 'Enter') go(); }} />
+      <button className="btn btn-primary" style=${{ height: 36 }} onClick=${go} disabled=${!name.trim()}>Criar espaço</button>
+    </div>
+    ${others && html`<p className="note-box" style=${{ marginTop: 16 }}>Já existem espaços de outras pessoas. Para entrar em um deles, peça para alguém de lá adicionar você em Convidar pessoas.</p>`}
+  </div></div>`;
+}
+
+function NameDialog({ open, onClose, title, sub, placeholder, cta, onSave }) {
+  const [v, setV] = useState('');
+  useEffect(() => { if (open) setV(''); }, [open]);
+  const save = () => { const t = v.trim(); if (!t) return; onSave(t); onClose(); };
+  return html`<${Dialog} open=${open} onClose=${onClose} width=${440} label=${title}>
+    <h2>${title}</h2>
+    ${sub && html`<p className="sub">${sub}</p>`}
+    <div className="dlg-body"><input className="inp" autoFocus=${true} value=${v} placeholder=${placeholder} aria-label=${title}
+      onChange=${(e) => setV(e.target.value)} onKeyDown=${(e) => { if (e.key === 'Enter') save(); }} /></div>
+    <div className="dlg-foot"><button className="btn btn-ghost" onClick=${onClose}>Cancelar</button>
+      <button className="btn btn-primary" onClick=${save} disabled=${!v.trim()}>${cta}</button></div>
+  <//>`;
+}
+
+function NewBoardDialog({ open, onClose, onCreate }) {
+  const [title, setTitle] = useState('');
+  const [bg, setBg] = useState('aurora');
+  useEffect(() => { if (open) { setTitle(''); setBg('aurora'); } }, [open]);
+  const create = () => { const t = title.trim(); if (!t) return; onCreate(t, bg); onClose(); };
+  return html`<${Dialog} open=${open} onClose=${onClose} width=${460} label="Criar quadro">
+    <h2>Criar quadro</h2>
+    <p className="sub">O quadro começa com as listas A Fazer, Em Andamento e Concluído. Renomeie ou crie outras depois.</p>
+    <div className="dlg-body">
+      <div className="preview" style=${bgStyle(bg)}>${title || 'Nome do quadro'}</div>
+      <label className="field">Nome<input className="inp" autoFocus=${true} value=${title} placeholder="Ex.: Demanda da Mel"
+        onChange=${(e) => setTitle(e.target.value)} onKeyDown=${(e) => { if (e.key === 'Enter') create(); }} /></label>
+      <div className="field">Fundo
+        <div className="bg-pick" role="radiogroup" aria-label="Fundo do quadro">
+          ${BACKGROUNDS.map((b) => html`<button key=${b.key} role="radio" aria-checked=${bg === b.key} aria-label=${b.label} title=${b.label}
+              className=${'bg-opt' + (bg === b.key ? ' on' : '')} style=${bgStyle(b.key)} onClick=${() => setBg(b.key)}></button>`)}
+        </div>
+      </div>
+    </div>
+    <div className="dlg-foot"><button className="btn btn-ghost" onClick=${onClose}>Cancelar</button>
+      <button className="btn btn-primary" onClick=${create} disabled=${!title.trim()}>Criar quadro</button></div>
+  <//>`;
+}
+
+function ShareDialog({ ws, onClose }) {
+  useData();
+  const isOwner = ws.ownerId === Me.id;
+  const members = membersOfWs(ws);
+  const others = Object.values(Data.people).filter((p) => !(ws.memberIds || []).includes(p.id)).sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'));
+  const [pick, setPick] = useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  function addMember(pid) {
+    if (!pid || (ws.memberIds || []).includes(pid)) return;
+    patch('workspaces', ws.id, { memberIds: [...(ws.memberIds || []), pid] });
+    toast(`${personName(pid)} agora tem acesso a “${ws.name}”`, 'success');
+  }
+  function createAndAdd() {
+    const n = name.trim(); if (!n) return;
+    const e = email.trim().toLowerCase();
+    const existing = e && Object.values(Data.people).find((p) => (p.email || '').toLowerCase() === e);
+    if (existing) { addMember(existing.id); }
+    else { const id = uid(); put('people', id, { name: n, email: e || null, createdAt: now() }); addMember(id); }
+    setName(''); setEmail('');
+  }
+  return html`<${Dialog} open=${true} onClose=${onClose} width=${520} label="Convidar pessoas">
+    <h2>Pessoas em “${ws.name}”</h2>
+    <p className="sub">Quem está aqui vê todos os quadros deste espaço e pode ser responsável por cartões e etapas da esteira.</p>
+    <div className="dlg-body">
+      <div className="people-list">
+        ${members.map((m) => html`<div key=${m.id} className="person-row">
+          <${Avatar} person=${m} size=${30} />
+          <div className="info"><strong>${m.name}${m.id === Me.id ? ' (você)' : ''}</strong>${m.email && html`<small>${m.email}</small>`}</div>
+          ${m.id === ws.ownerId ? html`<span className="tag">Dono</span>`
+            : (isOwner || m.id === Me.id) && html`<button className="btn btn-ghost btn-sm btn-danger" onClick=${() => {
+                patch('workspaces', ws.id, { memberIds: ws.memberIds.filter((x) => x !== m.id) });
+                if (m.id === Me.id) onClose();
+              }}>${m.id === Me.id ? 'Sair' : 'Remover'}</button>`}
+        </div>`)}
+      </div>
+      ${others.length > 0 && html`<div className="field">Adicionar alguém que já tem perfil
+        <div className="row">
+          <select className="inp" value=${pick} onChange=${(e) => setPick(e.target.value)} aria-label="Pessoa">
+            <option value="">Escolha uma pessoa…</option>
+            ${others.map((p) => html`<option key=${p.id} value=${p.id}>${p.name}${p.email ? ` (${p.email})` : ''}</option>`)}
+          </select>
+          <button className="btn btn-primary" style=${{ height: 36 }} disabled=${!pick} onClick=${() => { addMember(pick); setPick(''); }}>Adicionar</button>
+        </div></div>`}
+      <div className="field">Criar perfil para uma pessoa nova
+        <div className="row" style=${{ flexWrap: 'wrap' }}>
+          <input className="inp grow" style=${{ flexBasis: 140 }} value=${name} placeholder="Nome" aria-label="Nome" onChange=${(e) => setName(e.target.value)} />
+          <input className="inp grow" style=${{ flexBasis: 180 }} type="email" value=${email} placeholder="E-mail (opcional)" aria-label="E-mail"
+            onChange=${(e) => setEmail(e.target.value)} onKeyDown=${(e) => { if (e.key === 'Enter') createAndAdd(); }} />
+          <button className="btn btn-primary" style=${{ height: 36 }} disabled=${!name.trim()} onClick=${createAndAdd}>Adicionar</button>
+        </div></div>
+      <p className="note-box">Para a pessoa abrir o app, envie a ela o link deste artifact pelo botão Compartilhar do Claude. Ao abrir, ela escolhe o próprio nome na lista.</p>
+    </div>
+  <//>`;
+}
+
+/* ---------- Meus cartões ---------- */
+function MyCards({ go }) {
+  useData();
+  const wsIds = new Set(myWorkspaces().map((w) => w.id));
+  const rows = Object.values(Data.cards)
+    .filter((c) => (c.memberIds || []).includes(Me.id))
+    .map((c) => ({ c, list: Data.lists[c.listId], board: Data.boards[c.boardId] }))
+    .filter((r) => r.board && r.list && wsIds.has(r.board.workspaceId))
+    .sort((a, b) => (a.c.dueDate || '9999').localeCompare(b.c.dueDate || '9999'));
+  const open = rows.filter((r) => !r.c.isCompleted);
+  const done = rows.filter((r) => r.c.isCompleted);
+  const item = (r) => {
+    const st = dueState(r.c.dueDate, r.c.isCompleted);
+    return html`<button key=${r.c.id} className="mc-item" onClick=${() => go({ name: 'board', id: r.board.id, card: r.c.id })}>
+      <span className="swatch" style=${bgStyle(r.board.background)}></span>
+      <span className="grow">
+        <span className=${'t' + (r.c.isCompleted ? ' done' : '')} style=${{ display: 'block' }}>${r.c.title}</span>
+        <span className="w" style=${{ display: 'block' }}>${r.board.title}, lista “${r.list.title}”</span>
+        ${r.c.dueDate && html`<span className=${'due due-' + st}><${Icon} n="calendar" s=${11} /> ${fmtDayLong(r.c.dueDate)}</span>`}
+      </span>
+    </button>`;
+  };
+  return html`<div className="page">
+    <h1>Meus cartões</h1>
+    <p className="muted" style=${{ marginTop: 4 }}>Tudo que está com você em todos os quadros compartilhados. Quando a esteira passa um cartão para você, ele aparece aqui.</p>
+    ${rows.length === 0 && html`<div className="empty-box" style=${{ margin: '24px 0' }}><p className="muted">Nenhum cartão atribuído a você por enquanto. Abra um cartão e use Pessoas para se colocar como responsável.</p></div>`}
+    ${open.length > 0 && html`<h2>Em aberto (${open.length})</h2><div className="mc-list">${open.map(item)}</div>`}
+    ${done.length > 0 && html`<h2>Concluídos (${done.length})</h2><div className="mc-list">${done.map(item)}</div>`}
+  </div>`;
+}
+
+/* ---------- Busca global ---------- */
+function SearchDialog({ open, onClose, go }) {
+  useData();
+  const [term, setTerm] = useState('');
+  const [sel, setSel] = useState(0);
+  useEffect(() => { if (open) { setTerm(''); setSel(0); } }, [open]);
+  if (!open) return null;
+  const t = term.trim().toLowerCase();
+  const ws = new Set(myWorkspaces().map((w) => w.id));
+  const boards = t.length > 1 ? Object.values(Data.boards).filter((b) => ws.has(b.workspaceId) && b.title.toLowerCase().includes(t)).slice(0, 8) : [];
+  const cards = t.length > 1 ? Object.values(Data.cards).filter((c) => { const b = Data.boards[c.boardId]; return b && Data.lists[c.listId] && ws.has(b.workspaceId) && c.title.toLowerCase().includes(t); }).slice(0, 12) : [];
+  const results = [...boards.map((b) => ({ k: 'b', b })), ...cards.map((c) => ({ k: 'c', c }))];
+  const pick = (r) => { onClose(); if (r.k === 'b') go({ name: 'board', id: r.b.id }); else go({ name: 'board', id: r.c.boardId, card: r.c.id }); };
+  let i = -1;
+  return html`<${Dialog} open=${true} onClose=${onClose} width=${560} label="Buscar">
+    <h2 className="sr-only">Buscar quadros e cartões</h2>
+    <input className="inp search-inp" autoFocus=${true} value=${term} placeholder="Buscar quadros e cartões…" aria-label="Buscar quadros e cartões"
+      style=${{ marginRight: 36, width: 'calc(100% - 36px)' }}
+      onChange=${(e) => { setTerm(e.target.value); setSel(0); }}
+      onKeyDown=${(e) => {
+        if (e.key === 'ArrowDown') { e.preventDefault(); setSel((s) => Math.min(results.length - 1, s + 1)); }
+        if (e.key === 'ArrowUp') { e.preventDefault(); setSel((s) => Math.max(0, s - 1)); }
+        if (e.key === 'Enter' && results[sel]) pick(results[sel]);
+      }} />
+    ${t.length < 2 && html`<p className="muted small" style=${{ marginTop: 12 }}>Digite ao menos duas letras.</p>`}
+    ${t.length > 1 && results.length === 0 && html`<p className="muted small" style=${{ marginTop: 12 }}>Nada encontrado para “${term.trim()}”.</p>`}
+    ${boards.length > 0 && html`<p className="res-h">Quadros</p>`}
+    ${boards.map((b) => { i++; const me = i; return html`<button key=${'b' + b.id} className=${'res' + (sel === me ? ' sel' : '')} onClick=${() => pick({ k: 'b', b })}>
+        <span className="swatch" style=${bgStyle(b.background)}></span><span className="trunc">${b.title}</span><small>${Data.workspaces[b.workspaceId]?.name}</small></button>`; })}
+    ${cards.length > 0 && html`<p className="res-h">Cartões</p>`}
+    ${cards.map((c) => { i++; const me = i; return html`<button key=${'c' + c.id} className=${'res' + (sel === me ? ' sel' : '')} onClick=${() => pick({ k: 'c', c })}>
+        <${Icon} n=${c.isTask ? 'checkSquare' : 'sticky'} s=${14} className="muted" /><span className=${'trunc' + (c.isCompleted ? ' done' : '')}>${c.title}</span>
+        <small>${Data.boards[c.boardId]?.title}, ${Data.lists[c.listId]?.title}</small></button>`; })}
+  <//>`;
+}
+
+/* ---------- Cabeçalho ---------- */
+function BoardSwitcher({ go }) {
+  useData();
+  const groups = myWorkspaces().map((ws) => ({ ws, boards: boardsOf(ws.id) })).filter((g) => g.boards.length);
+  return html`<${Popover} width=${270} trigger=${({ toggle, open }) => html`<button className="btn btn-outline" aria-expanded=${open} onClick=${toggle}>
+      <${Icon} n="grid" /><span className="hide-sm">Quadros</span><${Icon} n="chevronDown" s=${14} /></button>`}>
+    ${({ close }) => (groups.length === 0
+      ? html`<p className="muted small" style=${{ padding: 8 }}>Nenhum quadro ainda.</p>`
+      : groups.map((g, gi) => html`<${Fragment} key=${g.ws.id}>
+          ${gi > 0 && html`<div className="sep"></div>`}
+          <div className="menu-label">${g.ws.name}</div>
+          ${g.boards.map((b) => html`<button key=${b.id} className="menu-item" onClick=${() => { close(); go({ name: 'board', id: b.id }); }}>
+            <span className="swatch" style=${bgStyle(b.background)}></span><span className="trunc">${b.title}</span></button>`)}
+        <//>`))}
+  <//>`;
+}
+/* ---------- Backup: exportar e importar ---------- */
+function buildBackup() {
+  const data = {};
+  for (const c of SHARED) data[c] = Object.values(Data[c]);
+  return {
+    app: 'flowtify', version: 1, exportedAt: now(), exportedBy: personName(Me.id),
+    origin: location.protocol === 'file:' ? 'arquivo local' : location.host, data, notes: Object.values(Data.notes),
+  };
+}
+async function downloadBackup() {
+  const json = JSON.stringify(buildBackup(), null, 1);
+  const filename = `flowtify-backup-${todayStr()}.json`;
+  let dl = null;
+  if (window.claude && typeof window.claude.use === 'function') { try { dl = await window.claude.use('downloads'); } catch (e) { dl = null; } }
+  if (dl) {
+    try { await dl.save({ filename, data: json }); toast('Backup salvo.', 'success'); }
+    catch (e) { if (e && e.code !== 'declined') toast('Não foi possível salvar o backup aqui. Tente pelo arquivo local ou pelo GitHub.', 'error'); }
+    return;
+  }
+  const url = URL.createObjectURL(new Blob([json], { type: 'application/json' }));
+  const a = document.createElement('a'); a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 3000);
+  toast('Backup baixado: ' + filename, 'success');
+}
+function parseBackup(text) {
+  let o; try { o = JSON.parse(text); } catch (e) { throw new Error('O arquivo não é um backup válido (não é JSON).'); }
+  if (!o || o.app !== 'flowtify' || !o.data || typeof o.data !== 'object') throw new Error('Este arquivo não é um backup do Flowtify.');
+  const out = { data: {}, notes: [], exportedAt: o.exportedAt || null, exportedBy: o.exportedBy || null, origin: o.origin || null };
+  const ok = (d) => d && typeof d === 'object' && typeof d.id === 'string' && d.id.length > 0 && d.id.length < 80;
+  for (const c of SHARED) out.data[c] = Array.isArray(o.data[c]) ? o.data[c].filter(ok) : [];
+  out.notes = Array.isArray(o.notes) ? o.notes.filter(ok) : [];
+  return out;
+}
+function putMany(col, docs) {
+  if (!docs.length) return;
+  const m = { ...Data[col] };
+  for (const d of docs) { const c = clean(d); m[d.id] = { ...c, id: d.id }; }
+  Data[col] = m; emit();
+  for (const d of docs) write(col, d.id, { t: 'set', d: clean(d) });
+}
+function applyBackup(b, mode) {
+  const cols = [...SHARED, 'notes'];
+  const src = (c) => (c === 'notes' ? b.notes : b.data[c]);
+  let added = 0;
+  for (const c of cols) {
+    const docs = src(c);
+    if (mode === 'replace') {
+      const keep = new Set(docs.map((d) => d.id));
+      removeMany(c, Object.keys(Data[c]).filter((id) => !keep.has(id)));
+      putMany(c, docs); added += docs.length;
+    } else {
+      const fresh = docs.filter((d) => !Data[c][d.id]);
+      putMany(c, fresh); added += fresh.length;
+    }
+  }
+  return added;
+}
+
+function BackupDialog({ open, onClose }) {
+  useData();
+  const [parsed, setParsed] = useState(null);
+  const [err, setErr] = useState('');
+  const inputRef = useRef(null);
+  useEffect(() => { if (open) { setParsed(null); setErr(''); } }, [open]);
+  if (!open) return null;
+  const count = (o) => ({ ws: o.workspaces.length, boards: o.boards.length, lists: o.lists.length, cards: o.cards.length, people: o.people.length });
+  const cur = count(Object.fromEntries(SHARED.map((c) => [c, Object.values(Data[c])])));
+  function onFile(e) {
+    const f = e.target.files && e.target.files[0]; e.target.value = '';
+    if (!f) return;
+    setErr(''); setParsed(null);
+    const r = new FileReader();
+    r.onload = () => { try { setParsed(parseBackup(String(r.result || ''))); } catch (x) { setErr(x.message); } };
+    r.onerror = () => setErr('Não foi possível ler o arquivo.');
+    r.readAsText(f);
+  }
+  function run(mode) {
+    const n = applyBackup(parsed, mode);
+    toast(mode === 'replace' ? 'Dados substituídos pelo backup.' : (n ? `${n} itens novos importados.` : 'Nada novo: tudo do backup já estava aqui.'), 'success');
+    onClose();
+  }
+  const pc = parsed && count(parsed.data);
+  const summary = (c) => `${plural(c.boards, 'quadro', 'quadros')}, ${plural(c.lists, 'lista', 'listas')}, ${plural(c.cards, 'cartão', 'cartões')} e ${plural(c.people, 'pessoa', 'pessoas')}`;
+  return html`<${Dialog} open=${true} onClose=${onClose} width=${520} label="Backup dos dados">
+    <h2>Backup dos dados</h2>
+    <p className="sub">Os dados ficam salvos neste navegador${Backend.mode === 'db' ? ' (aqui, no banco deste link)' : ''}. Com o backup você guarda uma cópia, leva os quadros para outro endereço ou computador e restaura se algo for apagado.</p>
+    <div className="dlg-body">
+      <section className="note-box" style=${{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <strong style=${{ color: 'var(--foreground)' }}>Exportar</strong>
+        <span>Baixa um arquivo .json com ${summary(cur)}, incluindo históricos, comentários e post-its.</span>
+        <div><button className="btn btn-primary btn-sm" onClick=${downloadBackup}><${Icon} n="download" s=${14} /> Exportar backup</button></div>
+      </section>
+      <section className="note-box" style=${{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        <strong style=${{ color: 'var(--foreground)' }}>Importar</strong>
+        <span>Escolha um arquivo de backup do Flowtify.</span>
+        <input ref=${inputRef} type="file" accept=".json,application/json" className="sr-only" onChange=${onFile} aria-label="Arquivo de backup" />
+        <div><button className="btn btn-secondary btn-sm" onClick=${() => inputRef.current && inputRef.current.click()}><${Icon} n="upload" s=${14} /> Escolher arquivo</button></div>
+        ${err && html`<span style=${{ color: 'var(--destructive)' }}>${err}</span>`}
+        ${parsed && html`<${Fragment}>
+          <span style=${{ color: 'var(--foreground)' }}>O backup tem ${summary(pc)}${parsed.exportedAt ? `, exportado em ${fmtWhen(parsed.exportedAt)}` : ''}${parsed.exportedBy ? ` por ${parsed.exportedBy}` : ''}.</span>
+          <div className="row" style=${{ flexWrap: 'wrap' }}>
+            <button className="btn btn-primary btn-sm" onClick=${() => run('merge')}>Juntar com os dados atuais</button>
+            <button className="btn btn-destructive btn-sm" onClick=${() => run('replace')}>Substituir tudo</button>
+          </div>
+          <span className="hint">Juntar só acrescenta o que ainda não existe aqui e não altera nada do que já está. Substituir apaga os dados atuais e deixa só os do backup.</span>
+        <//>`}
+      </section>
+    </div>
+  <//>`;
+}
+
+function Header({ route, go, openSearch, theme, toggleTheme }) {
+  useData();
+  const me = Data.people[Me.id];
+  return html`<header className="hdr">
+    <button className="brand" onClick=${() => go({ name: 'home' })} aria-label="Flowtify, ir para Meus quadros">Flowtify<span>.</span></button>
+    <${BoardSwitcher} go=${go} />
+    <button className=${'btn btn-ghost' + (route.name === 'mine' ? ' is-active' : '')} onClick=${() => go({ name: 'mine' })} aria-label="Meus cartões">
+      <${Icon} n="userCheck" /><span className="hide-sm">Meus cartões</span></button>
+    <button className="btn btn-outline search-trigger hide-sm" onClick=${openSearch} aria-label="Buscar quadros e cartões">
+      <${Icon} n="search" /><span className="lbl">Buscar quadros e cartões</span><kbd>Ctrl K</kbd></button>
+    <div className="hdr-right">
+      <button className="btn btn-ghost btn-icon show-sm" aria-label="Buscar" onClick=${openSearch}><${Icon} n="search" /></button>
+      <button className="btn btn-ghost btn-icon" aria-label=${theme === 'dark' ? 'Usar tema claro' : 'Usar tema escuro'} title="Alternar tema" onClick=${toggleTheme}>
+        <${Icon} n=${theme === 'dark' ? 'sun' : 'moon'} /></button>
+      <${Popover} align="end" width=${230} trigger=${({ toggle }) => html`<button className="btn btn-ghost btn-icon av-btn" aria-label=${'Perfil de ' + (me?.name || '')} onClick=${toggle}>
+          <${Avatar} person=${me} size=${30} /></button>`}>
+        ${({ close }) => html`<div className="menu-label" style=${{ color: 'var(--foreground)', fontSize: 13 }}>${me?.name}</div>
+          ${me?.email && html`<div className="menu-sub">${me.email}</div>`}
+          <div className="sep"></div>
+          <button className="menu-item" onClick=${() => { close(); window.dispatchEvent(new Event('flowtify:backup')); }}><${Icon} n="download" /> Backup dos dados</button>
+          <button className="menu-item" onClick=${() => { close(); setMe(null); }}><${Icon} n="logOut" /> Trocar de pessoa</button>`}
+      <//>
+    </div>
+  </header>`;
+}
+
+/* ---------- App ---------- */
+function getTheme() {
+  const t = LS.get('flowtify:theme', null);
+  if (t === 'light' || t === 'dark') return t;
+  try { return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'; } catch (e) { return 'light'; }
+}
+function initialRoute() {
+  const h = (location.hash || '').replace('#', '');
+  if (h === 'meus-cartoes') return { name: 'mine' };
+  const r = LS.get('flowtify:route', null);
+  if (r && r.name === 'board' && r.id) return { name: 'board', id: r.id };
+  if (r && r.name === 'mine') return { name: 'mine' };
+  return { name: 'home' };
+}
+function App() {
+  useData();
+  const [route, setRoute] = useState(initialRoute);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [backupOpen, setBackupOpen] = useState(false);
+  useEffect(() => { const h = () => setBackupOpen(true); window.addEventListener('flowtify:backup', h); return () => window.removeEventListener('flowtify:backup', h); }, []);
+  const [theme, setTheme] = useState(getTheme);
+  const [timedOut, setTimedOut] = useState(false);
+  useEffect(() => { document.documentElement.setAttribute('data-theme', theme); }, [theme]);
+  useEffect(() => { const t = setTimeout(() => setTimedOut(true), 12000); return () => clearTimeout(t); }, []);
+  useEffect(() => {
+    const k = (e) => { if ((e.metaKey || e.ctrlKey) && (e.key || '').toLowerCase() === 'k') { e.preventDefault(); setSearchOpen((o) => !o); } };
+    window.addEventListener('keydown', k); return () => window.removeEventListener('keydown', k);
+  }, []);
+  const go = (r) => { setRoute(r); LS.set('flowtify:route', { name: r.name, id: r.id || null }); };
+  const toggleTheme = () => setTheme((t) => { const n = t === 'dark' ? 'light' : 'dark'; LS.set('flowtify:theme', n); return n; });
+
+  const ready = Backend.mode !== 'loading' && (SHARED.every((c) => Backend.ready.has(c)) || timedOut);
+  const banner = Backend.mode === 'local' && html`<div className="banner">Modo local: as alterações ficam salvas só neste navegador.</div>`;
+  if (!ready) return html`<div className="loading"><p className="hero-brand" style=${{ fontSize: 28, fontFamily: 'Space Grotesk, sans-serif' }}>Flowtify<span className="dot-accent">.</span></p><p className="muted">Carregando quadros…</p></div>`;
+  const me = Me.id && Data.people[Me.id];
+  if (!me) return html`<div className="app">${banner}<main className="main"><${WhoAmI} /></main>
+    <${BackupDialog} open=${backupOpen} onClose=${() => setBackupOpen(false)} /><${ToastHost} /></div>`;
+
+  let page;
+  if (route.name === 'board') page = html`<${BoardPage} key=${route.id} id=${route.id} cardId=${route.card} go=${go} />`;
+  else if (route.name === 'mine') page = html`<${MyCards} go=${go} />`;
+  else page = html`<${Home} go=${go} />`;
+  return html`<div className="app">
+    <${Header} route=${route} go=${go} openSearch=${() => setSearchOpen(true)} theme=${theme} toggleTheme=${toggleTheme} />
+    ${banner}
+    <main className=${'main' + (route.name === 'board' ? ' main-board' : '')}>${page}</main>
+    <${SearchDialog} open=${searchOpen} onClose=${() => setSearchOpen(false)} go=${go} />
+    <${BackupDialog} open=${backupOpen} onClose=${() => setBackupOpen(false)} />
+    <${ToastHost} />
+  </div>`;
+}
+
+document.documentElement.setAttribute('data-theme', getTheme());
+ReactDOM.createRoot(document.getElementById('root')).render(html`<${App} />`);
+initBackend();
+</script>
+</body>
+</html>
